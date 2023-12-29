@@ -1,0 +1,10 @@
+.vscode
+/old
+/env
+__pycache__
+.ipynb_checkpoints
+/progress*
+/results*
+/variables*
+core.python-*
+/data*
