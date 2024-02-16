@@ -2,17 +2,12 @@
 # Import packages
 import os
 
-import numpy as np
+import pandas as pd
+from keras.preprocessing.image import ImageDataGenerator
+from utils import save_state
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
-# from keras import mixed_precision
-from keras.preprocessing.image import ImageDataGenerator
-import pandas as pd
-
-from utils import save_state
-
-# %%
 # Directories and files
 nii_dir = "/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun"
 csv_file = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/data/slicesdir.csv"
