@@ -9,7 +9,7 @@ from utils import save_state
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 
-# Directories and files
+# Directories and files sss
 nii_dir = "/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun"
 csv_file = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/data/slicesdir.csv"
 data_file = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/data/Tn_linear.csv"
