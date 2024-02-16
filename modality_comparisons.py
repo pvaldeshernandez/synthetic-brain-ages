@@ -1,9 +1,6 @@
 import numpy as np
 import pandas as pd
 import statsmodels.formula.api as smf
-from scipy import stats
-from patsy import dmatrices, Treatment
-
 from utils import export_test_results
 
 # Read data
