@@ -6,6 +6,7 @@ from arch.bootstrap import IIDBootstrap
 from scipy.stats import median_abs_deviation
 
 
+#
 def getAB(T, avar, bavar):
     indIDu = pd.factorize(T["ID"])[0]
     a = T.groupby(indIDu)[avar].apply(list)
@@ -157,9 +158,7 @@ def BAstats(T, avar, bavar, groupvar, nboots, r):
                 "MAECIm": MAECIm,
             }
         )
-        pd_corr = pd.DataFrame(
-            {"groups": groups, "Rr": Rr, "RCIr": RCIr, "Rm": Rm, "RCIm": RCIm}
-        )
+        pd_corr = pd.DataFrame({"groups": groups, "Rr": Rr, "RCIr": RCIr, "Rm": Rm, "RCIm": RCIm})
         pd_Rsquared = pd.DataFrame(
             {"groups": groups, "R2r": R2r, "R2CIr": R2CIr, "R2m": R2m, "R2CIm": R2CIm}
         )
