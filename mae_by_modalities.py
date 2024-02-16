@@ -3,10 +3,8 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from arch.bootstrap import IIDBootstrap
-from scipy.stats import median_abs_deviation
 
 
-#
 def getAB(T, avar, bavar):
     indIDu = pd.factorize(T["ID"])[0]
     a = T.groupby(indIDu)[avar].apply(list)
