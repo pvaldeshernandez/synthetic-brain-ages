@@ -5,6 +5,7 @@ from sklearn.metrics import r2_score
 from arch.bootstrap import IIDBootstrap
 
 
+# defines the function to calculate the median absolute error
 def getAB(T, avar, bavar):
     indIDu = pd.factorize(T["ID"])[0]
     a = T.groupby(indIDu)[avar].apply(list)
