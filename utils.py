@@ -2,10 +2,8 @@ import pickle
 import numpy as np
 import pandas as pd
 from statsmodels.tools.eval_measures import aic
-from sklearn.impute import SimpleImputer
 import seaborn as sns
 import matplotlib.pyplot as plt
-from scipy import stats
 
 
 def add_gaussian_noise(image, mean=0, std=0.1):

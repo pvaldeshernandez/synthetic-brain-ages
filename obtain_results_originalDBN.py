@@ -6,8 +6,6 @@ from keras.losses import mean_absolute_error
 from keras.models import load_model
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import Sequence
-import pandas as pd
-import numpy as np
 
 from myClassesFunctions import group_by_ID, myplots
 
@@ -43,7 +41,10 @@ data_dir_models = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage
 results_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results_dbn"
 prediction_csv = os.path.join(results_folder, "test_predictions_dbn.csv")
 pd_test_csv = os.path.join(results_folder, "pd_test_dbn.csv")
-fig_pred = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results_dbn/BrainAge_Predictions_dbn.png"
+fig_pred = (
+    "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results_dbn/"
+    "BrainAge_Predictions_dbn.png"
+)
 
 # %%
 # Read all saved data needed

@@ -31,7 +31,7 @@ pd_test_csv = os.path.join(results_folder, "pd_test" + aic + ".csv")
 
 # %%
 # Read all saved data needed
-variable_file = os.path.join(variables_folder, f"cv_grid_setup.pkl")
+variable_file = os.path.join(variables_folder, "cv_grid_setup.pkl")
 with open(variable_file, "rb") as f:
     data = pickle.load(f)
 
@@ -57,7 +57,7 @@ test_df = data["test_df"]
 final_train_df = data["final_train_df"]
 gen = data["gen"]
 
-variable_file = os.path.join(variables_folder, f"variables_after_cv.pkl")
+variable_file = os.path.join(variables_folder, "variables_after_cv.pkl")
 with open(variable_file, "rb") as f:
     data = pickle.load(f)
 
@@ -83,7 +83,7 @@ with open(variable_file, "rb") as f:
 print(grid_with_names_selection)
 print(formula_selection)
 
-variable_file = os.path.join(variables_folder, f"variables_final_model.pkl")
+variable_file = os.path.join(variables_folder, "variables_final_model.pkl")
 with open(variable_file, "rb") as f:
     data = pickle.load(f)
 
@@ -175,7 +175,7 @@ final_train_grouped_agg.to_csv(train_prediction_csv, index=True)
 # Save all local variables
 now = datetime.datetime.now()
 date_string = now.strftime("%Y-%m-%d_%H-%M-%S")
-variable_file = os.path.join(variables_folder, f"variables_after_test.pkl")
+variable_file = os.path.join(variables_folder, "variables_after_test.pkl")
 with open(variable_file, "wb") as f:
     pickle.dump(
         [
@@ -230,7 +230,7 @@ mpr_merged_mae_test = mean_absolute_error(
 # Save all local variables
 now = datetime.datetime.now()
 date_string = now.strftime("%Y-%m-%d_%H-%M-%S")
-variable_file = os.path.join(variables_folder, f"variables_at_end.pkl")
+variable_file = os.path.join(variables_folder, "variables_at_end.pkl")
 with open(variable_file, "wb") as f:
     pickle.dump(
         [

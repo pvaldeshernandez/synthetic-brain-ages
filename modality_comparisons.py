@@ -3,17 +3,19 @@ import pandas as pd
 import statsmodels.formula.api as smf
 from utils import export_test_results
 
+# Define common file path
+results_path = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results"
+
 # Read data
 df0 = pd.read_csv(
-    "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results_dbn/test_predictions_dbn.csv"
+    "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results_dbn/"
+    "test_predictions_dbn.csv"
 )
 df0["modality"] = df0["modality"].replace("MPRAGE", "MPRAGE0")
 df0 = df0.assign(
     corrected_brainage=np.random.rand(len(df0)), corrected_PAD=np.random.rand(len(df0))
 )
-df1 = pd.read_csv(
-    "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/test_predictions.csv"
-)
+df1 = pd.read_csv(f"{results_path}/test_predictions.csv")
 df = pd.concat([df1, df0[df0["modality"].isin(["MPRAGE0"])]], ignore_index=False)
 df = df.reset_index(drop=True)
 
@@ -76,9 +78,7 @@ for pad_var in ["PAD", "corrected_PAD"]:
     summary_df = result.summary(alpha=0.05 / 1).tables[1]
 
     # Write DataFrame to CSV file
-    summary_df.to_csv(
-        f"/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/summary-{pad_var}.csv"
-    )
+    summary_df.to_csv(f"{results_path}/summary-{pad_var}.csv")
 
     # ANOVA across modalities
     anova_contrast = np.eye(nmodalities - 1, result.params.shape[0] - 1)
@@ -86,7 +86,7 @@ for pad_var in ["PAD", "corrected_PAD"]:
     export_test_results(
         result,
         anova_contrast,
-        f"/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/anova-{pad_var}.csv",
+        f"{results_path}/anova-{pad_var}.csv",
         test_type="f",
     )
 
@@ -97,7 +97,7 @@ for pad_var in ["PAD", "corrected_PAD"]:
     t_test = export_test_results(
         result,
         anova_contrast,
-        f"/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/comparison-{pad_var}.csv",
+        f"{results_path}/comparison-{pad_var}.csv",
         test_type="t",
         alpha=0.05 / anova_contrast.shape[0],
     )
@@ -113,7 +113,7 @@ for pad_var in ["PAD", "corrected_PAD"]:
     export_test_results(
         result,
         mae_contrast,
-        f"/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/maes-{pad_var}.csv",
+        f"{results_path}/maes-{pad_var}.csv",
         test_type="t",
         alpha=0.05 / mae_contrast.shape[0],
     )
@@ -145,7 +145,7 @@ for pad_var in ["PAD", "corrected_PAD"]:
     export_test_results(
         result,
         anova_contrast,
-        f"/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/anova-slope-{pad_var}.csv",
+        f"{results_path}/anova-slope-{pad_var}.csv",
         test_type="f",
     )
 
@@ -172,7 +172,7 @@ for pad_var in ["PAD", "corrected_PAD"]:
     export_test_results(
         result,
         contrast_matrix,
-        f"/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/anova-slope-pairwise-{pad_var}.csv",
+        f"{results_path}/anova-slope-pairwise-{pad_var}.csv",
         test_type="t",
         names=pair_names,
         alpha=0.05 / contrast_matrix.shape[0],
@@ -187,7 +187,7 @@ for pad_var in ["PAD", "corrected_PAD"]:
     export_test_results(
         result,
         anova_contrast,
-        f"/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/anova-slope_zero-{pad_var}.csv",
+        f"{results_path}/anova-slope_zero-{pad_var}.csv",
         test_type="f",
     )
 
@@ -195,7 +195,7 @@ for pad_var in ["PAD", "corrected_PAD"]:
     export_test_results(
         result,
         anova_contrast[:, :-1],
-        f"/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/anova-slope_zero-each-{pad_var}.csv",
+        f"{results_path}/anova-slope_zero-each-{pad_var}.csv",
         test_type="t",
         names=df["modality"].cat.categories.tolist() + ["all"],
         alpha=0.05 / anova_contrast.shape[0],

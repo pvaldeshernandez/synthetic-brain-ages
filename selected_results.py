@@ -1,31 +1,25 @@
 import pickle
 import pandas as pd
 from myClassesFunctions import cronbach_from_df, myplots
-from utils import load_state
 
-df_train = pd.read_csv(
-    "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/train_predictions.csv"
-)
-df = pd.read_csv(
-    "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/test_predictions.csv"
-)
+project_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/"
+results_folder = project_folder + "results/"
 
-fig_pred_train = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/BrainAge_Predictions_Train.png"
-fig_pred = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/BrainAge_Predictions.png"
-fig_corrpred = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/Corrected_BrainAge_Predictions.png"
-fig_corrpred_in1 = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/Corrected_BrainAge_Predictions_in1.png"
-fig_corrpred_out1 = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/Corrected_BrainAge_Predictions_out1.png"
-fig_corrpred_in2 = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/Corrected_BrainAge_Predictions_in2.png"
-fig_corrpred_out2 = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/Corrected_BrainAge_Predictions_out2.png"
-fig_corrpad = (
-    "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/Corrected_PADs.png"
-)
-fig_corrpad_in1 = (
-    "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/Corrected_PADs_in1.png"
-)
-fig_corrpad_in2 = (
-    "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/Corrected_PADs_in2.png"
-)
+fig_pred_train = results_folder + "BrainAge_Predictions_Train.png"
+fig_pred = results_folder + "BrainAge_Predictions.png"
+fig_corrpred = results_folder + "Corrected_BrainAge_Predictions.png"
+fig_corrpred_in1 = results_folder + "Corrected_BrainAge_Predictions_in1.png"
+fig_corrpred_out1 = results_folder + "Corrected_BrainAge_Predictions_out1.png"
+fig_corrpred_in2 = results_folder + "Corrected_BrainAge_Predictions_in2.png"
+fig_corrpred_out2 = results_folder + "Corrected_BrainAge_Predictions_out2.png"
+fig_corrpad = results_folder + "Corrected_PADs.png"
+fig_corrpad_in1 = results_folder + "Corrected_PADs_in1.png"
+fig_corrpad_in2 = results_folder + "Corrected_PADs_in2.png"
+
+variable_file = project_folder + "/variables/variables_after_test.pkl"
+
+df_train = pd.read_csv(results_folder + "train_predictions.csv")
+df = pd.read_csv(results_folder + "test_predictions.csv")
 
 # Create a boolean vector for rows containing the set of values in column modality
 mask = df["modality"].isin(["T1wGRE-SR"])
@@ -106,9 +100,8 @@ myplots(
 )
 
 # plot predicted slice in train data to check effect of the median operation on the linear bias
-fig_pred_train_slices = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/BrainAge_Predictions_Train_slices.png"
-fig_pred_test_slices = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results/BrainAge_Predictions_Test_slices.png"
-variable_file = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/variables/variables_after_test.pkl"
+fig_pred_train_slices = results_folder + "BrainAge_Predictions_Train_slices.png"
+fig_pred_test_slices = results_folder + "BrainAge_Predictions_Test_slices.png"
 with open(variable_file, "rb") as f:
     data = pickle.load(f)
 (

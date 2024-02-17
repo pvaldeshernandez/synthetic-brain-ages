@@ -10,9 +10,8 @@ from itertools import product
 
 import numpy as np
 import tensorflow as tf
-from keras.losses import huber, mean_absolute_error, mean_squared_error
+from keras.losses import mean_absolute_error, mean_squared_error
 from keras.models import load_model
-from matplotlib import pyplot as plt
 
 from myClassesFunctions import (
     CustomDataSequenceTwoInputsAndAge,
@@ -66,7 +65,7 @@ formulas = [[f, dw] for f in formulas for dw in do_wls]
 
 now = datetime.datetime.now()
 date_string = now.strftime("%Y-%m-%d_%H-%M-%S")
-variable_file = os.path.join(variables_folder, f"cv_grid_setup.pkl")
+variable_file = os.path.join(variables_folder, "cv_grid_setup.pkl")
 with open(variable_file, "wb") as f:
     pickle.dump(
         [
@@ -276,8 +275,8 @@ if do_crossvalidate:
                             # Append the corrected model to the list
                             actual_epochs_list.append(actual_epochs)
 
-                            # Predict all brain ages to calculate brain age per subject in the validation
-                            # data and add the predictions as a new column in valid_df
+                            # Predict all brain ages to calculate brain age per subject in the
+                            # validation data and add the predictions as a new column in valid_df
                             valid_sequence.on_epoch_end()
                             valid_brainage_slices = model.predict(
                                 valid_sequence,
@@ -299,8 +298,9 @@ if do_crossvalidate:
                             aic_per_formulas = []
                             aic_corr_per_formulas = []
                             for f, _ in enumerate(formulas):
-                                # Predict all corrected brain ages to calculate brain age per subject
-                                # in the validation data and add the predictions as a new column in valid_df
+                                # Predict all corrected brain ages to calculate brain age per
+                                # subject in the validation data and add the predictions as a new
+                                # column in valid_df
                                 valid_sequence.on_epoch_end()
                                 # corrected_models[f].run_eagerly = True
                                 valid_corrected_brainage_slices = corrected_models[f].predict(
@@ -308,15 +308,15 @@ if do_crossvalidate:
                                     verbose=1,
                                     steps=step_size_valid,
                                 )
-                                valid_df.loc[
-                                    :, "corrected_brainage_slices"
-                                ] = valid_corrected_brainage_slices
+                                valid_df.loc[:, "corrected_brainage_slices"] = (
+                                    valid_corrected_brainage_slices
+                                )
 
                                 # Calculate agregated dataframe
                                 valid_grouped_agg = group_by_ID(valid_df)
 
-                                # Calculate the mean absolute error between the predicted and true age
-                                # values
+                                # Calculate the mean absolute error between the predicted and true
+                                # ages
                                 mae = mean_absolute_error(
                                     valid_grouped_agg["age"],
                                     valid_grouped_agg["corrected_brainage"],
@@ -414,7 +414,7 @@ formula_selection = formulas[np.argmin(corrected_mean_mae_valid_array)]
 # Save all local variables
 now = datetime.datetime.now()
 date_string = now.strftime("%Y-%m-%d_%H-%M-%S")
-variable_file = os.path.join(variables_folder, f"variables_after_cv.pkl")
+variable_file = os.path.join(variables_folder, "variables_after_cv.pkl")
 with open(variable_file, "wb") as f:
     pickle.dump(
         [
@@ -535,7 +535,7 @@ model.save(os.path.join(results_folder, "trained_" + filename))
 # Save all local variables
 now = datetime.datetime.now()
 date_string = now.strftime("%Y-%m-%d_%H-%M-%S")
-variable_file = os.path.join(variables_folder, f"variables_final_model.pkl")
+variable_file = os.path.join(variables_folder, "variables_final_model.pkl")
 with open(variable_file, "wb") as f:
     pickle.dump(
         [

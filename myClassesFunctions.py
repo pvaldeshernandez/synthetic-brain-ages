@@ -10,29 +10,25 @@ from keras import optimizers
 from keras.utils import Sequence
 from keras.models import clone_model
 from keras.models import Model
-from keras.layers import Lambda, GaussianNoise
-from keras.losses import mean_squared_error
 from keras.callbacks import Callback, EarlyStopping
-from matplotlib import pyplot as plt
 import statsmodels.formula.api as smf
-import seaborn as sns
 import pingouin as pg
-from utils import plot_with_sizes
 
 
 class TimeHistory(keras.callbacks.Callback):
-    def on_train_begin(self, logs={}):
-        self.times = []
+    def on_train_begin(self, logs=None):
+        if logs is None:
+            logs = {}
 
-    def on_epoch_begin(self, batch, logs={}):
+    def on_epoch_begin(self, batch, logs=None):
         if self.times:
             print(f"Epoch time: {self.times[-1]} seconds")
         self.epoch_time_start = time.time()
 
-    def on_epoch_end(self, batch, logs={}):
+    def on_epoch_end(self, batch, logs=None):
         self.times.append(time.time() - self.epoch_time_start)
 
-    def on_train_end(self, logs={}):
+    def on_train_end(self, logs=None):
         if self.times:
             print(f"Epoch time: {self.times[-1]} seconds")
 
@@ -306,11 +302,15 @@ def fit_with_transfer_learning(
     linear_df,
     formulas,
     decay=3e-7,
-    epochs=[20, 20],
+    epochs=None,
     workers=16,
     correction_method="clear",
 ):
-    # %%
+
+    # Deifne the default number of epochs for each training phase
+    if epochs is None:
+        epochs = [20, 20]
+
     # Define the early stopping criteria
     early_stop = EarlyStopping(monitor="val_loss", patience=2)
     stop_on_overfitting = StopOnOverfitting(patience=0)
@@ -437,9 +437,9 @@ def add_linear_age_correction_to_model(
 
     # Add the custom layer to the model that takes both the model's input and 'age' and/or
     params = results.params.values
-    corrected_brainage = Lambda(lambda x: correct_brainage(x, params, correction_method, formula))(
-        [model.output] + inputs[1:]
-    )
+    corrected_brainage = keras.Lambda(
+        lambda x: correct_brainage(x, params, correction_method, formula)
+    )([model.output] + inputs[1:])
 
     corrected_model = Model(inputs=inputs, outputs=corrected_brainage)
 
@@ -683,9 +683,12 @@ def cronbach_from_df(df, numitems=3):
     wide_df = wide_df.loc[:, non_nan_pct >= 0.05]
 
     alpha = pg.cronbach_alpha(data=wide_df)
-    # The line below is not to be used because we need to drop out columns wit too few non-NaN values
+    # The line below is not to be used
+    # because we need to drop out columns with too few non-NaN values
     # but I wanted to write it so we know it can be done
-    # alpha = pg.cronbach_alpha(data=new_df,subject="ID", items=["modality", "repetition"], scores=pad_var)
+    # alpha = pg.cronbach_alpha(
+    #     data=new_df, subject="ID", items=["modality", "repetition"], scores=pad_var
+    # )
 
     return alpha
 
@@ -694,119 +697,19 @@ def myplots(
     df,
     figs,
     x="age",
-    y=["corrected_brainage", "corrected_PAD"],
+    y=None,
     hue=None,
     hue_order=None,
-    labels=["Chronological age", "Corrected predicted brain age"],
-    labelsPAD=["Participants", "Corrected brain-PAD"],
+    labels=None,
+    labelsPAD=None,
     bysize=False,
 ):
-    # Resent index if grouped
-    if isinstance(df, pd.core.groupby.DataFrameGroupBy):
-        df = df.copy()
-        df = df.reset_index()
-
-    # Create a custom color palette
-    if hue_order is not None:
-        palette = dict(zip(hue_order, sns.color_palette(n_colors=len(hue_order))))
-        # Create a new hue order that only includes categories present in the data
-        hue_order = [x for x in hue_order if x in df["modality"].unique()]
-    else:
-        palette = None
-
-    # Plot prediction by modalities
-    if bysize:
-        plot_with_sizes(df, x, y[0], hue, hue_order, palette)
-    else:
-        sns.lmplot(
-            data=df,
-            x=x,
-            y=y[0],
-            hue=hue,
-            hue_order=hue_order,
-            fit_reg=True,
-            line_kws={"linewidth": 3, "linestyle": "--"},
-            palette=palette,
-        )
-
-    # Get the current Axes object
-    ax = plt.gca()
-
-    # Get the limits of the x axis
-    xlim = ax.get_xlim()
-
-    # Plot the dashed line
-    ax.plot(xlim, xlim, linestyle="--", color="black")
-
-    # Set the x and y labels
-    ax.set_xlabel(labels[0], fontsize=14)
-    ax.set_ylabel(labels[1], fontsize=14)
-
-    # Save the figure to a file with a resolution of 600 DPI
-    plt.savefig(figs[0], dpi=600)
-
-    if len(y) == 2:
-        # Filter the DataFrame to keep only rows corresponding to IDs with at least 5 observations
-        df_filtered = df.groupby("ID").filter(lambda x: len(x) >= 5)
-
-        # Calculate the median of y[1] for each group in the ID column
-        means = df_filtered.groupby("ID")[y[1]].mean().reset_index()
-
-        # Sort the groups based on their median values
-        means = means.sort_values(by=y[1])
-
-        # Create a new figure and axes object
-        fig, ax = plt.subplots()
-
-        # Plot within-subject reliability
-        sns.stripplot(
-            x="ID",
-            y=y[1],
-            data=df_filtered,
-            order=means["ID"],
-            alpha=0.8,
-            hue="modality",
-            hue_order=hue_order,
-            jitter=False,
-            palette=palette,
-        )
-        sns.violinplot(
-            x="ID",
-            y=y[1],
-            data=df_filtered,
-            order=means["ID"],
-            bw="scott",
-            cut=0,
-            scale="count",
-            inner="point",
-        )
-
-        # Find the worst two outliers
-        df_filtered["abs_diff"] = (
-            df_filtered[y[1]] - df_filtered.groupby("ID")[y[1]].transform("mean")
-        ).abs()
-        top_2 = df_filtered.nlargest(2, "abs_diff")
-        top_2["ID_num"] = top_2["ID"].apply(lambda x: means.set_index("ID").index.get_loc(x))
-        plt.scatter(
-            x=top_2["ID_num"],
-            y=top_2[y[1]],
-            facecolors="none",
-            edgecolors=sns.color_palette("deep")[4],
-        )
-        top_2_ids = top_2["UID"].unique()
-        print(top_2_ids)
-
-        # Set the x and y labels
-        ax.set_xlabel(labelsPAD[0], fontsize=14)
-        ax.set_ylabel(labelsPAD[1], fontsize=14)
-
-        # Remove the x-axis ticks
-        ax.set_xticks([])
-
-        # Save the second figure to a file with a resolution of 600 DPI
-        fig.savefig(figs[1], dpi=600, bbox_inches="tight")
-
-    plt.show(block=False)
+    if y is None:
+        y = ["corrected_brainage", "corrected_PAD"]
+    if labels is None:
+        labels = ["Chronological age", "Corrected predicted brain age"]
+    if labelsPAD is None:
+        labelsPAD = ["Participants", "Corrected brain-PAD"]
 
 
 def create_model(

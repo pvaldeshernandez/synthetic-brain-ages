@@ -1,19 +1,17 @@
 from itertools import product
 import os
 
-import numpy as np
-
 
 def prepare_train(
-        data_dir_models,
-        batch_factors,
-        do_weights,
-        model_names,
-        losses,
-        learning_rates,
-        moderates,
-        Number_of_KFolds,
-        Number_of_KFolds_to_run,
+    data_dir_models,
+    batch_factors,
+    do_weights,
+    model_names,
+    losses,
+    learning_rates,
+    moderates,
+    Number_of_KFolds,
+    Number_of_KFolds_to_run,
 ):
 
     # Calculate number of folds to be run
@@ -34,7 +32,7 @@ def prepare_train(
     grid = list(product(*params.values()))
     grid_with_names = [tuple(zip(params.keys(), values)) for values in grid]
 
-    #%%
+    # %%
     # Initialize mae_list
     params_with_folds = {
         "batch_factor": batch_factors,
@@ -49,7 +47,7 @@ def prepare_train(
     grid_with_folds_with_names = [
         tuple(zip(params_with_folds.keys(), values)) for values in grid_with_folds
     ]
-    
+
     shape = tuple(len(value) for value in params_with_folds.values())
 
     return (
@@ -61,21 +59,25 @@ def prepare_train(
         shape,
     )
 
+
 def prepare_train_noise(
-        data_dir_models,
-        batch_factors,
-        do_weights,
-        model_names,
-        losses,
-        learning_rates,
-        moderates,
-        noises,
-        Number_of_KFolds,
-        Number_of_KFolds_to_run,
+    data_dir_models,
+    batch_factors,
+    do_weights,
+    model_names,
+    losses,
+    learning_rates,
+    moderates,
+    noises,
+    Number_of_KFolds,
+    Number_of_KFolds_to_run,
 ):
 
     # Calculate number of folds to be run
     NFolds = min(Number_of_KFolds, Number_of_KFolds_to_run)
+
+    # List of pre-trained DBN models
+    dbn_models = [os.path.join(data_dir_models, file) for file in model_names]
 
     # Create grid for intepretation of the results
     params = {
@@ -93,7 +95,7 @@ def prepare_train_noise(
     # List of pre-trained DBN models
     dbn_models = [os.path.join(data_dir_models, file) for file in model_names]
 
-    #%%
+    # %%
     # Initialize mae_list
     params_with_folds = {
         "batch_factor": batch_factors,
@@ -109,7 +111,7 @@ def prepare_train_noise(
     grid_with_folds_with_names = [
         tuple(zip(params_with_folds.keys(), values)) for values in grid_with_folds
     ]
-    
+
     shape = tuple(len(value) for value in params_with_folds.values())
 
     return (
