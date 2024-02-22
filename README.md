@@ -15,7 +15,7 @@ Go to https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 and download 
 + DeepBrainNet_InceptionResnetv2.h5
 + DeepBrainNet_VGG16.h5
 
-Copy these files to [data](/data/slicesdir.csv) and rename them by substituting "DeepBrainNet" by "DBN"
+Copy these files to [data](/data/slicesdir.csv) and rename them by substituting "DeepBrainNet" with "DBN"
 Note that mode models from https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 could be downloaded and line 43 of [train_model.py](/train_model.py)
 
 To create the necessary variables first run
