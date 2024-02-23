@@ -1,4 +1,5 @@
 .vscode
+/log*
 /old
 /env
 __pycache__
@@ -8,5 +9,4 @@ __pycache__
 /variables*
 core.python-*
 /data*
-/data0*
 create_example_data.py
