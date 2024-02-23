@@ -12,13 +12,17 @@ The retraining consists of the following steps:
 (steps 2 and 3 can be interchangeable depending on what strategy is adopted)
 
 ### Install dependencies
-To execute the [Workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow), you will need to install all of the Python libraries that are required. The required library and associated versions are available in requirements.txt.
+To execute the [Workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow), you will need to install all of the Python libraries that are required. 
 
 The easiest way to install the requirements is with Conda.
 
-conda create -p /path/to/gradientdec_env pip python=3.9
-conda activate /path/to/gradientdec_env
-pip install -r requirements.txt
+#!/bin/bash
+ml conda
+conda create -p /path/to/clinicalDeepBrainNet_env pip python=3.9 -y
+conda config --append envs_dirs/path/to/clinicalDeepBrainNet_env
+source activate /path/to/clinicalDeepBrainNet_env
+pip install numpy nibabel scikit-learn h5py keras matplotlib nibabel numpy pandas scipy tensorflow-gpu Pillow scikit-learn tqdm
+
 ### Preparing the data
 Folder example_data contains the following folders and files:
  - [data](/example_data/data):
@@ -38,14 +42,29 @@ Copy these files to [data](/data/slicesdir.csv) and rename them by substituting 
 
 #### Adding more architectures
 Note that more models from https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 can be used as long as line 43 of [train_model.py](/train_model.py) is modified accordingly.
-Also, some models may have been saved using an old version of Keras. In that case, the older version must be used to get the weights, via:
+Also, some models may have been saved using an old version of Keras (e.g., 2.2.4). In that case, Keras 2.2.4 must be installed to extract and save the model weights via:
 ```
 from keras.models import load_model
+import pickle
+
 model = load_model("path_to_model")
+
 weights = model.get_weights()
+with open('my_model_weights.pkl', 'wb') as file:
+    pickle.dump(model.get_weights(), file)
 ```
-and then the following in the latest Keras version:
+Then, the newer version of Keras (e.g., 2.11.0) used to run the [Workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow) must be reinstalled and used to load the weights and set them to a vanilla version of the architecture (e.g., InceptionResnetV2, etc.):
 ```
+from keras.models import load_model
+from keras.applications import InceptionResnetV2
+import pickle
+
+with open('my_model_weights.pkl', 'rb') as file:
+    loaded_weights = pickle.load(file)
+
+model = InceptionResNetV2(weights='imagenet', include_top=True)
+model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mae'])
+
 model.set_weights(weights)
 ```
 
