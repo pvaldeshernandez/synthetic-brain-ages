@@ -29,7 +29,8 @@ pip install numpy pandas scipy scikit-learn keras matplotlib tensorflow-gpu
 ```
 
 ### Prepare the data
-Use [SynthSR](https://github.com/BBillot/SynthSR/tree/main/SynthSR) to predict the synthetic MPRAGEs. Use [Slicer.py](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Script/Slicer.py) on the synthetic and original MPRAGEs to save their axial slices into separate JPEG files in a single folder in a fast drive. Each filename must have the following format:
+Use [SynthSR](https://github.com/BBillot/SynthSR/tree/main/SynthSR) to predict the synthetic MPRAGEs. Normalize and skull-strip the synthetic MPRAGEs and any original MPRAGE also present in your sample. Perform a careful QC to remove the MRIs that are noisy or were not preprocessed correctly. See our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation) for suggestions.
+Use [Slicer.py](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Script/Slicer.py) on the synthetic and original MPRAGEs to save their axial slices into separate JPEG files in a single folder in a fast drive. Each filename must have the following format:
 
 /path/to/jpg/Subject[ID]_run[number]_T1_BrainAlig-[slice].jpg
 
@@ -65,7 +66,8 @@ Copy these files to [data](/data/slicesdir.csv) and rename them by substituting 
 | 0004 | ses-01         | 01         | T2w-SR    | sub-0004_ses-01_run-07 | 25 | male   | white | Verio   | {'/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0004run07_T1_BrainAligned.nii'} | training          | linear          | training        | training        |
 | 0004 | ses-01         | 02         | T1w-SR    | sub-0004_ses-01_run-13 | 25 | male   | white | Verio   | {'/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0004run13_T1_BrainAligned.nii'} | training          | linear          | training        | training        |
 
-Note that, in column "t1s", the nifti file name of the first row contains the string "run02". As explained above, this is a unique string that encodes session ("actual_session"), repetition ("actual_run"), and modality ("modality"). UID also does that.
+Note that, in column "t1s", the nifti file name of the first row contains the string "run02". As explained above, this is a unique string that encodes session ("actual_session"), repetition ("actual_run"), and modality ("modality"). Note that UID plays a similar role. It is the BIDs name of the file. For historical reasons, we kept the convention required by the codes in [DeepBrainNet](https://github.com/vishnubashyam/DeepBrainNet). The modality of the synthetic MPRAGEs has the suffix '-SR'.
+The 'domains' columns define membership to training, bias and testing sets, as described in Figure 6 of our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation).
 
 #### Adding more architectures
 Note that more models from https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 can be used as long as line 43 of [train_model.py](/train_model.py) is modified accordingly.
@@ -100,11 +102,52 @@ with open('path/to/model/model_weights.pkl', 'rb') as file:
 new_model.set_weights(weights)
 
 new_model.save('/data/DBN_InceptionResnetv2.h5')
-
 ```
 
 ### Run the workflow
-
+* Run [create_data.py](/create_data.py) after modifying:
+```
+# Directories and files (change as needed)
+# Define the folder containing the nifti files. This is only used to remove the path from the file
+# in line 40, to merge the data_df and data_dm DataFrames in line 44.
+nii_dir = "/path/to/niftis"
+# Define the path to the csv file containing the list of jpg files generated with DeepBrainNet
+# Slicer.py
+csv_file = "[ROOT]/data/slicesdir.csv"
+# Define the path to the table containing the subjects' information
+data_file = "[ROOT]/data/Tn_linear.csv"
+# Define the folder containing the results and progress files
+results_folder = "[ROOT]/results"
+progress_folder = "[ROOT]/progress"
+```
+* Run [train_model.py](/train_model.py) after modifying:
+``` 
+# Define the folder containing the JPEG files
+data_dir = "path/to/jpegs/DBA_Shands_slices"
+# Define the folder containing the models
+data_dir_models = "[ROOT]/data"
+# Define the folder containing the results and progress files
+results_folder = "[ROOT]/results"
+progress_folder = "[ROOT]/progress"
+# Define the folder containing variables that will be generated during the training
+variables_folder = "[ROOT]/variables"
+```
+* Run [obtain_results.py](/obtain_results.py) after modifying:
+``` 
+# Define the folder containing the JPEG files
+data_dir = "path/to/jpegs/DBA_Shands_slices"
+# Define the folder containing the models
+data_dir_models = "[ROOT]/data"
+# Define the folder containing the results and progress files
+results_folder = "[ROOT]/results"
+progress_folder = "[ROOT]/progress"
+# Define the folder containing variables that will be generated during the training
+variables_folder = "[ROOT]/variables"
+```
+* Run [selected_results.py](/obtain_results.py) after modifying:
+``` 
+project_folder = "[ROOT]"
+``` 
 
 ## Cite our paper
 If you use this code in your research, please acknowledge this work by citing the
