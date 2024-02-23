@@ -30,7 +30,7 @@ Use [SynthSR](https://github.com/BBillot/SynthSR/tree/main/SynthSR) to predict t
 
 /path/to/jpg/Subject[ID]_run[number]_T1_BrainAlig-[slice].jpg
 
-"ID" is the ID of the subject, "number" is a unique instance number that accounts for the session, repetitions, and modality (e.g. if the subject has 3 different modalities, and one is repeated, in session 1 and two modalities in a session 2, "number" takes values from 1 to 6. These filenames names will be listed in [slicesdir.csv](/example_data/data/slicesdir.csv), as explained below. "Slice" is the slice number that goes from 0 to 79. as explained in our paper []
+"ID" is the ID of the subject, "number" is a unique instance number that accounts for the session, repetitions, and modality (e.g. if the subject has 3 different modalities, and one is repeated, in session 1 and two modalities in a session 2, "number" takes values from 1 to 6. These filenames names will be listed in [slicesdir.csv](/example_data/data/slicesdir.csv), as explained below. "Slice" is the slice number that goes from 0 to 79. as explained in our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation)
 
 The folder [example_data](/example_data) contains the following folders and files:
  - [data](/example_data/data):
