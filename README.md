@@ -105,7 +105,7 @@ new_model.save('/data/DBN_InceptionResnetv2.h5')
 ```
 
 ### Run the workflow
-* Run [create_data.py](/create_data.py) after modifying:
+* [] Run [create_data.py](/create_data.py) after modifying:
 ```
 # Directories and files (change as needed)
 # Define the folder containing the nifti files. This is only used to remove the path from the file
