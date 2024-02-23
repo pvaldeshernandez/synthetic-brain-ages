@@ -29,8 +29,10 @@ Go to https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 and download 
 + DeepBrainNet_InceptionResnetv2.h5
 + DeepBrainNet_VGG16.h5
 
-Copy these files to [data](/data/slicesdir.csv) and rename them by substituting "DeepBrainNet" with "DBN"
+Copy these files to [data](/data/slicesdir.csv) and rename them by substituting "DeepBrainNet" with "DBN".
+
 Note that more models from https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 can be used as long as line 43 of [train_model.py](/train_model.py) is modified accordingly.
+
 Also, some models may have been saved using an old version of Keras. In that case, the older version must be used to get the weights, via:
 ```
 from keras.models import load_model
