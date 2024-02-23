@@ -9,10 +9,16 @@ from utils import save_state
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 
-# Directories and files
+# Directories and files (change as needed)
+# Define the folder containing the nifti files. This is only used to remove the path from the file
+# in line 40, in order to merge the data_df and data_dm DataFrames in line 44.
 nii_dir = "/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun"
+# Define the path to the csv file containing the list of jpg files generated with DeepBrainNet
+# Slicer.py
 csv_file = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/data/slicesdir.csv"
+# Define the path to the table containing the subjects' information
 data_file = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/data/Tn_linear.csv"
+# Define the folder containing the results and progress files
 results_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results"
 progress_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/progress"
 
@@ -40,7 +46,8 @@ data_df = pd.merge(data_df, data_dm, on="name", how="left")
 # Remove rows containing NaN values in the "ID_y" column
 data_df = data_df.dropna(subset=["ID_y"])
 
-# Remove several columns from the data_df DataFrame
+# Remove several columns from the data_df DataFrame.This is only for the UFHealth data and can be
+# removed from the code. That is why it includes a try-except block.
 list_to_remove = [
     "brainagedbn",
     "PAD",
@@ -52,7 +59,10 @@ list_to_remove = [
     "PADacn",
     "ID_y",
 ]
-data_df = data_df.drop(list_to_remove, axis=1)
+try:
+    data_df = data_df.drop(list_to_remove, axis=1)
+except KeyError:
+    pass
 
 # Rename the "ID_x" column to "ID"
 data_df.rename(columns={"ID_x": "ID"}, inplace=True)
