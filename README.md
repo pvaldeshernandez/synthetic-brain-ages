@@ -33,7 +33,7 @@ Use [SynthSR](https://github.com/BBillot/SynthSR/tree/main/SynthSR) to predict t
 
 /path/to/jpg/Subject[ID]_run[number]_T1_BrainAlig-[slice].jpg
 
-"ID" is the ID of the subject, "number" is a unique instance number that accounts for the session, repetitions, and modality (e.g. if the subject has 3 different modalities, and one is repeated, in session 1 and two modalities in a session 2, "number" takes values from 1 to 6. These filenames names will be listed in [slicesdir.csv](/example_data/data/slicesdir.csv), as explained below. "Slice" is the slice number that goes from 0 to 79. as explained in our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation).
+"ID" is the ID of the subject, "number" is a unique instance number that accounts for the session, repetitions, and modality (e.g. if the subject has 3 different modalities in session one, and one is repeated, and two modalities in a session two, "number" takes values from 1 to 6. These filenames names will be listed in [slicesdir.csv](/example_data/data/slicesdir.csv), as explained below. "Slice" is the slice number that goes from 0 to 79. as explained in our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation).
 
 The folder [example_data](/example_data) contains the following folders and files:
  - [data](/example_data/data):
@@ -50,6 +50,22 @@ Go to https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 and download 
 + DeepBrainNet_VGG16.h5
 
 Copy these files to [data](/data/slicesdir.csv) and rename them by substituting "DeepBrainNet" with "DBN".
+
+* [slicesdir.csv](/data/slicesdir.csv) will contain a list of the names of the JPEG files
+* [Tn_linear.csv](//data/Tn_linear.csv) will be the following table:
+
+| ID   | actual_session | actual_run | modality  | UID                  | age | Sex    | Race  | scanner | t1s                                                                                                      | domain_Holdout_01 | domain_KFold_01 | domain_KFold_02 | domain_KFold_03 |
+| :--- | :---           | :---       | :---      | :---                 | :---| :---   | :---  | :---    | :---                                                                                                     | :---              | :---            | :---            | :---            |
+| 0002 | ses-01         | 01         | MPRAGE-SR | sub-0002_ses-01_run-02 | 41 | female | white | Avanto  | {'/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0002run02_T1_BrainAligned.nii'} | training          | training        | linear          | training        |
+| 0002 | ses-01         | 01         | T1w-SR    | sub-0002_ses-01_run-04 | 41 | female | white | Avanto  | {'/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0002run04_T1_BrainAligned.nii'} | training          | training        | linear          | training        |
+| 0002 | ses-01         | 01         | T2w-SR    | sub-0002_ses-01_run-07 | 41 | female | white | Avanto  | {'/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0002run07_T1_BrainAligned.nii'} | training          | training        | linear          | training        |
+| 0003 | ses-01         | 01         | MPRAGE-SR | sub-0003_ses-01_run-02 | 65 | female | white | Verio   | {'/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0003run02_T1_BrainAligned.nii'} | training          | training        | training        | linear          |
+| 0003 | ses-01         | 01         | MPRAGE    | sub-0003_ses-01_run-03 | 65 | female | white | Verio   | {'/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0003run03_T1_BrainAligned.nii'} | training          | training        | training        | linear          |
+| 0004 | ses-01         | 01         | T1w-SR    | sub-0004_ses-01_run-04 | 25 | male   | white | Verio   | {'/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0004run04_T1_BrainAligned.nii'} | training          | linear          | training        | training        |
+| 0004 | ses-01         | 01         | T2w-SR    | sub-0004_ses-01_run-07 | 25 | male   | white | Verio   | {'/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0004run07_T1_BrainAligned.nii'} | training          | linear          | training        | training        |
+| 0004 | ses-01         | 02         | T1w-SR    | sub-0004_ses-01_run-13 | 25 | male   | white | Verio   | {'/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0004run13_T1_BrainAligned.nii'} | training          | linear          | training        | training        |
+
+Note that, in column "t1s", the nifti file name of the first row contains the string "run02". As explained above, this is a unique string that encodes session ("actual_session"), repetition ("actual_run"), and modality ("modality"). UID also does that.
 
 #### Adding more architectures
 Note that more models from https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 can be used as long as line 43 of [train_model.py](/train_model.py) is modified accordingly.
