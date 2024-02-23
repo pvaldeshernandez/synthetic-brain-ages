@@ -12,7 +12,7 @@ The retraining consists of the following steps:
 (steps 2 and 3 can be interchangeable depending on what strategy is adopted)
 
 ### Install dependencies
-To execute the [Workflow], you will need to install all of the Python libraries that are required. The required library and associated versions are available in requirements.txt.
+To execute the [Workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow), you will need to install all of the Python libraries that are required. The required library and associated versions are available in requirements.txt.
 
 The easiest way to install the requirements is with Conda.
 
