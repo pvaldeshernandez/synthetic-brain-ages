@@ -15,13 +15,14 @@ The retraining consists of the following steps:
 To execute the [Workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow), you will need to install all of the Python libraries that are required. 
 
 The easiest way to install the requirements is with Conda.
-
+```
 #!/bin/bash
 ml conda
 conda create -p /path/to/clinicalDeepBrainNet_env pip python=3.9 -y
 conda config --append envs_dirs/path/to/clinicalDeepBrainNet_env
 source activate /path/to/clinicalDeepBrainNet_env
 pip install numpy nibabel scikit-learn h5py keras matplotlib nibabel numpy pandas scipy tensorflow-gpu Pillow scikit-learn tqdm
+```
 
 ### Preparing the data
 Folder example_data contains the following folders and files:
@@ -50,22 +51,30 @@ import pickle
 model = load_model("path_to_model")
 
 weights = model.get_weights()
-with open('my_model_weights.pkl', 'wb') as file:
+with open('path/to/model/model_weights.pkl', 'wb') as file:
     pickle.dump(model.get_weights(), file)
 ```
 Then, the newer version of Keras (e.g., 2.11.0) used to run the [Workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow) must be reinstalled and used to load the weights and set them to a vanilla version of the architecture (e.g., InceptionResnetV2, etc.):
 ```
-from keras.models import load_model
+from keras.models import load_model, Model
 from keras.applications import InceptionResnetV2
 import pickle
 
-with open('my_model_weights.pkl', 'rb') as file:
+with open('path/to/model/model_weights.pkl', 'rb') as file:
     loaded_weights = pickle.load(file)
 
-model = InceptionResNetV2(weights='imagenet', include_top=True)
-model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mae'])
+model = InceptionResNetV2(weights='imagenet',input_shape=(182, 218, 3))
+new_model = Model(
+    model.inputs,
+    layers.Dense(1, activation="linear")(
+        layers.Dropout(0.8)(layers.Dense(1024, activation="relu")(model.layers[-2].output))
+    ),
+)
+new_model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mae'])
 
-model.set_weights(weights)
+new_model.set_weights(weights)
+new_model.save('/data/DBN_InceptionResnetv2.h5')
+
 ```
 
 ### Run the workflow
