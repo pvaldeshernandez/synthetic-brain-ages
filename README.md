@@ -21,7 +21,7 @@ ml conda
 conda create -p /path/to/clinicalDeepBrainNet_env pip python=3.9 -y
 conda config --append envs_dirs/path/to/clinicalDeepBrainNet_env
 source activate /path/to/clinicalDeepBrainNet_env
-pip install numpy nibabel scikit-learn h5py keras matplotlib nibabel numpy pandas scipy tensorflow-gpu Pillow scikit-learn tqdm
+pip install numpy pandas scipy scikit-learn keras matplotlib tensorflow-gpu
 ```
 
 ### Preparing the data
