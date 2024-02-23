@@ -7,22 +7,28 @@ The retraining consists of the following steps:
 1. Predict Synthetic MPRAGEs from any MRI (any modality, slice orientation, voxel dimension, clinical-grade or research-grade).
 2. Extract the brain, i.e., skull-strip the MRI.
 3. Normalize the synthetic MPRAGEs to the FSL's 1mm-isotropic template.
-4. Use [Slicer.py](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Script/Slicer.py) (follow their instalation requirements, e.g., modules, packages) to save the axial slices into separate image files.
+4. Use [Slicer.py](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Script/Slicer.py) (follow their installation requirements, e.g., modules, packages) to save the axial slices into separate image files.
 
 (steps 2 and 3 can be interchangeable depending on what strategy is adopted)
 
 ### Install dependencies
+To execute the [Workflow], you will need to install all of the Python libraries that are required. The required library and associated versions are available in requirements.txt.
 
+The easiest way to install the requirements is with Conda.
+
+conda create -p /path/to/gradientdec_env pip python=3.9
+conda activate /path/to/gradientdec_env
+pip install -r requirements.txt
 ### Preparing the data
-Folder example_data" contains the following folders and files:
- - data:
+Folder example_data contains the following folders and files:
+ - [data](/example_data/data):
    - [slicesdir.csv](/example_data/data/slicesdir.csv)
    - [Tn_linear.csv](/example_data/data/Tn_linear.csv)
- - progress (empty)
- - results (empty)
- - variables (empty)
+ - [progress](/example_data/progress) (empty)
+ - [results](/example_data/results) (empty)
+ - [variables](/example_data/variables) (empty)
 
-Copy these folders to the root. 
+Copy these folders to the [root](/). 
 
 Go to https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 and download the following files:
 + DeepBrainNet_InceptionResnetv2.h5
@@ -42,6 +48,7 @@ and then the following in the latest Keras version:
 ```
 model.set_weights(weights)
 ```
+
 ### Run the workflow
 
 ## Citation
