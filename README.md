@@ -2,6 +2,7 @@
 
 ## Summary
 This toolbox was used to retrain, via transfer learning, [DeepBrainNet](https://github.com/vishnubashyam/DeepBrainNet) models to predict brain age from synthetic research-grade MPRAGEs predicted from clinical-grade MRIs of arbitrary modalities. A DeepBrainNet model is a CNN developed by [Bashyan et al., (2020)](https://doi.org/10.1093%2Fbrain%2Fawaa160) to predict brain age that can be based on different known architectures like InceptionResNetv2, VGG16, etc. The synthetic MPRAGEs can be predicted using [SynthSR](https://github.com/BBillot/SynthSR/tree/main/SynthSR), developed by [Iglesias et al., 2023](https://doi.org/10.1126%2Fsciadv.add3607) or any super-resolution that has learned the map between any MRI to its corresponding research-grade MPRAGE.
+
 ## Workflow
 The retraining consists of the following steps:
 1. Predict Synthetic MPRAGEs from any MRI (any modality, slice orientation, voxel dimension, clinical-grade or research-grade).
@@ -25,7 +26,13 @@ pip install numpy pandas scipy scikit-learn keras matplotlib tensorflow-gpu
 ```
 
 ### Preparing the data
-Folder example_data contains the following folders and files:
+Use [SynthSR](https://github.com/BBillot/SynthSR/tree/main/SynthSR) to predict the synthetic MPRAGEs. Use [Slicer.py](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Script/Slicer.py) on the synthetic and original MPRAGEs to save their axial slices into separate JPEG files in a single folder in a fast drive. Each filename must have the following format:
+
+/path/to/jpg/Subject[ID]_run[number]_T1_BrainAlig-[slice].jpg
+
+"ID" is the ID of the subject, "number" is a unique instance number that accounts for the session, repetitions, and modality (e.g. if the subject has 3 different modalities, and one is repeated, in session 1 and two modalities in a session 2, "number" takes values from 1 to 6. These filenames names will be listed in [slicesdir.csv](/example_data/data/slicesdir.csv), as explained below. "Slice" is the slice number that goes from 0 to 79. as explained in our paper []
+
+The folder [example_data](/example_data) contains the following folders and files:
  - [data](/example_data/data):
    - [slicesdir.csv](/example_data/data/slicesdir.csv)
    - [Tn_linear.csv](/example_data/data/Tn_linear.csv)
