@@ -12,7 +12,7 @@ The retraining consists of the following steps:
 (steps 2 and 3 can be interchangeable depending on what strategy is adopted)
 
 ### Install dependencies
-To execute the [Workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow), you will need to install all of the Python libraries that are required. 
+To [run the workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow), you will need to install all of the Python libraries that are required. 
 
 The easiest way to install the requirements is with Conda.
 ```
@@ -54,7 +54,7 @@ weights = model.get_weights()
 with open('path/to/model/model_weights.pkl', 'wb') as file:
     pickle.dump(model.get_weights(), file)
 ```
-Then, the newer version of Keras (e.g., 2.11.0) used to run the [Workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow) must be reinstalled and used to load the weights and set them to a vanilla version of the architecture (e.g., InceptionResnetV2, etc.):
+Then, the newer version of Keras (e.g., 2.11.0) used to [run the workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow) must be reinstalled and used to load the weights and set them to a vanilla version of the architecture (e.g., InceptionResnetV2, etc.):
 ```
 from keras.models import load_model, Model
 from keras.applications import InceptionResnetV2
