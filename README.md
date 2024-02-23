@@ -60,9 +60,6 @@ from keras.models import load_model, Model
 from keras.applications import InceptionResnetV2
 import pickle
 
-with open('path/to/model/model_weights.pkl', 'rb') as file:
-    loaded_weights = pickle.load(file)
-
 model = InceptionResNetV2(weights='imagenet',input_shape=(182, 218, 3))
 new_model = Model(
     model.inputs,
@@ -72,7 +69,10 @@ new_model = Model(
 )
 new_model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mae'])
 
+with open('path/to/model/model_weights.pkl', 'rb') as file:
+    weights = pickle.load(file)
 new_model.set_weights(weights)
+
 new_model.save('/data/DBN_InceptionResnetv2.h5')
 
 ```
