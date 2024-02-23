@@ -35,10 +35,16 @@ class CustomSequence(Sequence):
 
 # %%
 # Directories and files
-progress_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/progress"
+# Define the folder containing the JPEG files
 data_dir = "/blue/cruzalmeida/chavilaffitte/DBA_Shands_slices"
+# Define the folder containing the models
 data_dir_models = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/data"
+# Define the folder containing the results and progress files
 results_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results_dbn"
+progress_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/progress"
+# Define the folder containing variables that will be generated during the training
+variables_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/variables"
+
 prediction_csv = os.path.join(results_folder, "test_predictions_dbn.csv")
 pd_test_csv = os.path.join(results_folder, "pd_test_dbn.csv")
 fig_pred = (
@@ -64,7 +70,6 @@ gen = ImageDataGenerator(**datagen_args)
 
 # Load original published model
 dbnmodel = load_model(
-    # "/orange/cruzalmeida/chavilaffitte/software/DeepBrainNet-master/Models/DBN_model.h5"
     "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/data/DBN_VGG16.h5"
 )
 

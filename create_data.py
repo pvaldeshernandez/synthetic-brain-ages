@@ -18,7 +18,7 @@ nii_dir = "/orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun"
 csv_file = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/data/slicesdir.csv"
 # Define the path to the table containing the subjects' information
 data_file = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/data/Tn_linear.csv"
-# Define the folder containing the results and progress files
+# Define the folder containing the results and progress folder
 results_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results"
 progress_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/progress"
 

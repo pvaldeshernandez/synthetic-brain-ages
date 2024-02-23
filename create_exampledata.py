@@ -7,6 +7,7 @@ data_dm = pd.read_csv(data_file)
 variables_to_keep = [
     "ID",
     "actual_session",
+    "actual_run",
     "modality",
     "UID",
     "age",

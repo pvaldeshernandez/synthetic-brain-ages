@@ -10,3 +10,6 @@ __pycache__
 core.python-*
 /data*
 create_example_data.py
+fixmodel.py
+train_model_MPRAGE.py
+mae_by_modalities.py

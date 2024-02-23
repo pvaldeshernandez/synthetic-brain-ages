@@ -20,11 +20,16 @@ aic = ""  # "_aic_corr"  # "_aic" ""
 
 # %%
 # Directories and files
-progress_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/progress"
+# Define the folder containing the JPEG files
 data_dir = "/blue/cruzalmeida/chavilaffitte/DBA_Shands_slices"
+# Define the folder containing the models
 data_dir_models = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/data"
+# Define the folder containing the results and progress files
 results_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/results"
+progress_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/progress"
+# Define the folder containing variables that will be generated during the training
 variables_folder = "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/variables"
+
 train_prediction_csv = os.path.join(results_folder, "train_predictions.csv")
 prediction_csv = os.path.join(results_folder, "test_predictions" + aic + ".csv")
 pd_test_csv = os.path.join(results_folder, "pd_test" + aic + ".csv")
