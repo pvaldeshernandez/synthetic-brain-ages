@@ -145,11 +145,11 @@ progress_folder = "[ROOT]/progress"
 variables_folder = "[ROOT]/variables"
 ```
 
-and [obtain_results_originalDBN.py](/obtain_results_originalDBN.py) after modifying exactly like in [obtain_results.py](/obtain_results.py) except for:
+ and [obtain_results_originalDBN.py](/obtain_results_originalDBN.py) after modifying exactly like in [obtain_results.py](/obtain_results.py) except for:
 ```
 results_folder = "[ROOT]/results_dbn"
 ```
-The former script generates the results for the best re-trained model for all MRIs, while the latter generates the results for the original MPRAGEs using the original [BeepBrainNetModel](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Models/DBN_model.h5)
+ Note: the former script generates the results for the best re-trained model for all MRIs, while the latter generates the results for the original MPRAGEs using the original [BeepBrainNetModel](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Models/DBN_model.h5)
 
 * Run [selected_results.py](/obtain_results.py) after modifying:
 ``` 
