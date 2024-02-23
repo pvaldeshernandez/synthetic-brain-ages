@@ -8,4 +8,5 @@ __pycache__
 /variables*
 core.python-*
 /data*
+/data0
 create_example_data.py
