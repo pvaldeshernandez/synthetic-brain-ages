@@ -141,7 +141,7 @@ data_dir_models = "[ROOT]/data"
 # Define the folder containing the results and progress files
 results_folder = "[ROOT]/results"
 progress_folder = "[ROOT]/progress"
-# Define the folder containing variables that will be generated during the training
+# Define the folder containing variables that will be generated after the prediction
 variables_folder = "[ROOT]/variables"
 ```
 
@@ -161,6 +161,8 @@ project_folder = "[ROOT]"
 results_folder = "[ROOT]/results"
 results_folder_dbn = "[ROOT]/results_dbn"
 ``` 
+## Using our re-trained model
+[obtain_results.py](/obtain_results.py) can be modified to new user-provided data
 
 ## Cite our paper
 If you use this code in your research, please acknowledge this work by citing the
