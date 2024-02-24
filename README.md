@@ -162,7 +162,7 @@ results_folder = "[ROOT]/results"
 results_folder_dbn = "[ROOT]/results_dbn"
 ``` 
 ## Using our re-trained model
-[obtain_results.py](/obtain_results.py) can be modified to new user-provided data
+Use [predict_brainages.py](/predict_brainages.py) can be modified to new user-provided data
 
 ## Cite our paper
 If you use this code in your research, please acknowledge this work by citing the
