@@ -1,5 +1,6 @@
 import time
 import numpy as np
+from numpy import array
 import pandas as pd
 import tensorflow as tf
 import keras
@@ -8,8 +9,7 @@ from sklearn.utils import compute_class_weight, compute_sample_weight
 from keras import layers
 from keras import optimizers
 from keras.utils import Sequence
-from keras.models import clone_model
-from keras.models import Model
+from keras.models import clone_model, Model
 from keras.callbacks import Callback, EarlyStopping
 import statsmodels.formula.api as smf
 import pingouin as pg
@@ -88,6 +88,13 @@ class CustomDataSequenceTwoInputsAndAge(Sequence):
         self.age = dataframe[x_col[3]].values
 
         # Create a LabelBinarizer instance to encode the categorical data
+        if modalities is None:
+            modalities = array(["T2w-SR", "MPRAGE", "T1w-SR", "T2wFLAIR-SR", "MPRAGE-SR"])
+
+        if scanners is None:
+            scanners = array(
+                ["Aera", "Verio", "Avanto", "Prisma", "Titan3T", "Sola"], dtype=object
+            )
         self.encoder_modalities = LabelBinarizer()
         self.encoder_modalities.fit(modalities)
         self.encoder_scanners = LabelBinarizer()

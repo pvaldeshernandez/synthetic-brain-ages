@@ -20,6 +20,7 @@ aic = ""  # "_aic_corr"  # "_aic" ""
 
 # %%
 # Directories and files
+# Directories and files
 # Define the folder containing the JPEG files
 data_dir = "/blue/cruzalmeida/chavilaffitte/DBA_Shands_slices"
 # Define the folder containing the models
