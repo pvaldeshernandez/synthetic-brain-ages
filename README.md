@@ -19,7 +19,7 @@ The retraining consists of the following steps:
 To [run the workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow), you will need to install all of the Python libraries that are required. 
 
 The easiest way to install the requirements is with Conda.
-```
+```bash
 #!/bin/bash
 ml conda
 conda create -p /path/to/clinicalDeepBrainNet_env pip python=3.9 -y
@@ -72,7 +72,7 @@ The 'domains' columns define membership to training, bias and testing sets, as d
 #### Adding more architectures
 Note that more models from https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 can be used as long as line 43 of [train_model.py](/train_model.py) is modified accordingly.
 Also, some models may have been saved using an old version of Keras (e.g., 2.2.4). In that case, Keras 2.2.4 must be installed to extract and save the model weights via:
-```
+```python
 from keras.models import load_model
 import pickle
 
@@ -83,7 +83,7 @@ with open('path/to/model/model_weights.pkl', 'wb') as file:
     pickle.dump(model.get_weights(), file)
 ```
 Then, the newer version of Keras (e.g., 2.11.0) used to [run the workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow) must be reinstalled and used to load the weights and set them to a vanilla version of the architecture (e.g., InceptionResnetV2, etc.):
-```
+```python
 from keras.models import load_model, Model
 from keras.applications import InceptionResnetV2
 import pickle
@@ -106,7 +106,7 @@ new_model.save('/data/DBN_InceptionResnetv2.h5')
 
 ### Run the workflow
 * [ ] Run [create_data.py](/create_data.py) after modifying:
-```
+```python
 # Directories and files (change as needed)
 # Define the folder containing the nifti files. This is only used to remove the path from the file
 # in line 40, to merge the data_df and data_dm DataFrames in line 44.
@@ -121,7 +121,7 @@ results_folder = "[ROOT]/results"
 progress_folder = "[ROOT]/progress"
 ```
 * [ ] Run [train_model.py](/train_model.py) after modifying:
-``` 
+```python
 # Define the folder containing the JPEG files
 data_dir = "path/to/jpegs/DBA_Shands_slices"
 # Define the folder containing the models
@@ -133,7 +133,7 @@ progress_folder = "[ROOT]/progress"
 variables_folder = "[ROOT]/variables"
 ```
 * [ ] Run [obtain_results.py](/obtain_results.py) after modifying:
-``` 
+```python
 # Define the folder containing the JPEG files
 data_dir = "path/to/jpegs/DBA_Shands_slices"
 # Define the folder containing the models
@@ -146,17 +146,17 @@ variables_folder = "[ROOT]/variables"
 ```
 
 * [ ] Run [obtain_results_originalDBN.py](/obtain_results_originalDBN.py) after modifying exactly like in [obtain_results.py](/obtain_results.py) except for:
-```
+```python
 results_folder = "[ROOT]/results_dbn"
 ```
    Note: [obtain_results.py](/obtain_results.py) generates the results for the best re-trained model for all MRIs, while [obtain_results_originalDBN.py](/obtain_results_originalDBN.py) generates the results for the original MPRAGEs using the original [BeepBrainNetModel](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Models/DBN_model.h5)
 
 * [ ] Run [selected_results.py](/obtain_results.py) after modifying:
-``` 
+```python 
 project_folder = "[ROOT]"
 ```
 * [ ] Run [selected_results.py](/modality_comparisons.py)
-``` 
+```python 
 # Define the folders containing the results
 results_folder = "[ROOT]/results"
 results_folder_dbn = "[ROOT]/results_dbn"
