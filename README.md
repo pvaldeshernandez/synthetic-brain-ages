@@ -162,7 +162,7 @@ results_folder = "[ROOT]/results"
 results_folder_dbn = "[ROOT]/results_dbn"
 ``` 
 ## Using our re-trained model
-Use [predict_brainages.py](/predict_brainages.py) can be modified to new user-provided data
+Use [predict_brainages.py](/predict_brainages.py) on new user-provided data. The participants' data has to be provided like in file [Tn_linear.csv](//data/Tn_linear.csv) (see ) the retrained model (the one with the bias correction layer). Request ours via pvaldeshernandez@ufl.edu.
 
 ## Cite our paper
 If you use this code in your research, please acknowledge this work by citing the
