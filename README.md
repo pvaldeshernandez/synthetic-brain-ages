@@ -162,7 +162,7 @@ results_folder = "[ROOT]/results"
 results_folder_dbn = "[ROOT]/results_dbn"
 ``` 
 ## Using our re-trained model
-Use [predict_brainages.py](/predict_brainages.py) on new user-provided data. The participants' data need to be provided similar to that in file [Tn_linear.csv](//data/Tn_linear.csv) (see https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#prepare-the-data). 
+Use [predict_brainages.py](/predict_brainages.py) on new user-provided data. The participants' data need to be provided similar to that in file [Tn_linear.csv](//data/Tn_linear.csv) (see [Prepare the data](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#prepare-the-data)).
 
 The path to the retrained model (the one with the bias correction layer) is also needed. Use yours or request ours via pvaldeshernandez@ufl.edu.
 
