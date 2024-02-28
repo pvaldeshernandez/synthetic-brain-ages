@@ -118,22 +118,18 @@ new_model.save('/data/DBN_InceptionResnetv2.h5')
 ```
 
 ### Run the workflow
-* Run [create_data.py](/create_data.py) after modifying:
+* Run [create_data_deployed.py](/create_data_deployed.py) after modifying:
 ```python
 # Directories and files (change as needed)
-# Define the folder containing the nifti files. This is only used to remove the path from the file
-# in line 40, to merge the data_df and data_dm DataFrames in line 44.
-nii_dir = "/path/to/niftis"
-# Define the path to the csv file containing the list of jpg files generated with DeepBrainNet
-# Slicer.py
-csv_file = "[ROOT]/data/slicesdir.csv"
+# Define the path to the csv file containing the list of jpg files generated with DeepBrainNet's Slicer.py
+csv_file = "[ROOT]/data/slices_filenames.csv"
 # Define the path to the table containing the subjects' information
-data_file = "[ROOT]/data/Tn_linear.csv"
+data_file = "[ROOT]/data/participants_data.csv"
 # Define the folder containing the results and progress files
 results_folder = "[ROOT]/results"
 progress_folder = "[ROOT]/progress"
 ```
-* Run [train_model.py](/train_model.py) after modifying:
+* Run [train_model_deployed.py](/train_model_deployed.py) after modifying:
 ```python
 # Define the folder containing the models
 data_dir_models = "[ROOT]/data"
@@ -157,10 +153,10 @@ formulas = [
 ]
 ```
 
-* Run [obtain_results.py](/obtain_results.py) after modifying:
+* Run [obtain_results.py](/obtain_results_deployed.py) after modifying:
 ```python
 # Define the folder containing the JPEG files
-data_dir = "path/to/jpegs/DBA_Shands_slices"
+data_dir = "path/to/jpegs"
 # Define the folder containing the models
 data_dir_models = "[ROOT]/data"
 # Define the folder containing the results and progress files
@@ -170,17 +166,20 @@ progress_folder = "[ROOT]/progress"
 variables_folder = "[ROOT]/variables"
 ```
 
-* Run [obtain_results_originalDBN.py](/obtain_results_originalDBN.py) after modifying exactly like in [obtain_results.py](/obtain_results.py) except for:
+* Run [obtain_results_originalDBN_deployed.py](/obtain_results_originalDBN_deployed.py) after modifying exactly like in [obtain_results_deployed.py](/obtain_results_deployed.py) except for:
 ```python
 results_folder = "[ROOT]/results_dbn"
 ```
-   Note: [obtain_results.py](/obtain_results.py) generates the results for the best re-trained model for all MRIs, while [obtain_results_originalDBN.py](/obtain_results_originalDBN.py) generates the results for the original MPRAGEs using the original [BeepBrainNetModel](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Models/DBN_model.h5)
+   Note: [obtain_results_deployed.py](/obtain_results_deployed.py) generates the results for the best re-trained model for all MRIs, while [obtain_results_originalDBN_deployed.py](/obtain_results_originalDBN_deployed.py) generates the results for the original MPRAGEs using the original [BeepBrainNetModel](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Models/DBN_model.h5)
 
-* Run [selected_results.py](/obtain_results.py) after modifying:
+* Run [selected_results_deployed.py](/selected_results_deployed.py) after modifying:
 ```python 
-project_folder = "[ROOT]"
+# Define the folder containing the results and progress files
+results_folder = "ROOT/results"
+results_folder_dbn = "ROOT/results_dbn"
+progress_folder = "[ROOT]/progress"
 ```
-* Run [modality_comparisons.py](/modality_comparisons.py) after modifying:
+* Run [modality_comparisons_deployed.py](/modality_comparisons_deployed.py) after modifying:
 ```python 
 # Define the folders containing the results
 results_folder = "[ROOT]/results"
