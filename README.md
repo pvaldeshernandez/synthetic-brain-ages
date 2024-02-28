@@ -135,8 +135,6 @@ progress_folder = "[ROOT]/progress"
 ```
 * Run [train_model.py](/train_model.py) after modifying:
 ```python
-# Define the folder containing the JPEG files
-data_dir = "path/to/jpegs/DBA_Shands_slices"
 # Define the folder containing the models
 data_dir_models = "[ROOT]/data"
 # Define the folder containing the results and progress files
@@ -145,6 +143,20 @@ progress_folder = "[ROOT]/progress"
 # Define the folder containing variables that will be generated during the training
 variables_folder = "[ROOT]/variables"
 ```
+
+```python
+formulas = [
+    "brainage ~ age",
+    # "brainage ~ age ^ 2",
+    "brainage ~ age * modality",
+    # "brainage ~ age ^ 2 * modality",
+    "brainage ~ age * scanner",
+    # "brainage ~ age ^ 2 * scanner",
+    # "brainage ~ age * modality * scanner",
+    # "brainage ~ age ^ 2 * modality * scanner",
+]
+```
+
 * Run [obtain_results.py](/obtain_results.py) after modifying:
 ```python
 # Define the folder containing the JPEG files
