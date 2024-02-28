@@ -17,3 +17,4 @@ remove_file_from_repo.sh
 shands-brainage.sh
 shands-brainage.code-workspace
 create_data.py
+obtain_results.py
