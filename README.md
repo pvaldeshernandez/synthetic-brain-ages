@@ -179,12 +179,6 @@ results_folder = "ROOT/results"
 results_folder_dbn = "ROOT/results_dbn"
 progress_folder = "[ROOT]/progress"
 ```
-* Run [modality_comparisons_deployed.py](/modality_comparisons_deployed.py) after modifying:
-```python 
-# Define the folders containing the results
-results_folder = "[ROOT]/results"
-results_folder_dbn = "[ROOT]/results_dbn"
-``` 
 ## Using our re-trained model
 Use [predict_brainages.py](/predict_brainages.py) on new user-provided data. The participants' data need to be provided similar to that in file [Tn_linear.csv](//data/Tn_linear.csv) (see [Prepare the data](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#prepare-the-data)).
 
