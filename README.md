@@ -29,7 +29,8 @@ pip install numpy pandas scipy scikit-learn keras matplotlib tensorflow-gpu
 ```
 
 ### Prepare the data
-Use [SynthSR](https://github.com/BBillot/SynthSR/tree/main/SynthSR) to predict the synthetic MPRAGEs. Normalize and skull-strip the synthetic MPRAGEs and any original MPRAGE also present in your sample. Perform a careful QC to remove the MRIs that are noisy or were not preprocessed correctly. See our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation) for suggestions.
+Use [SynthSR](https://github.com/BBillot/SynthSR/tree/main/SynthSR) to predict the synthetic MPRAGEs. Normalize and skull-strip the synthetic MPRAGEs and any original MPRAGE also present in your sample. Perform a careful QC to remove the MRIs that are noisy or were not preprocessed correctly--see our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation) for suggestions.
+
 Use [Slicer.py](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Script/Slicer.py) on the synthetic and original MPRAGEs to save their axial slices into separate JPEG files in a single folder in a fast drive. Each filename must have the following format:
 
 /path/to/jpg/Subject[ID]_run[number]_T1_BrainAlig-[slice].jpg
