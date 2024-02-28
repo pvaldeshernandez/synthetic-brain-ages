@@ -70,6 +70,15 @@ Copy these files to [data](/data/slicesdir.csv) and rename them by substituting 
 Note that, in column "t1s", the nifti file name of the first row contains the string "run02". As explained above, this is a unique string that encodes session ("actual_session"), repetition ("actual_run"), and modality ("modality"). Note that UID plays a similar role. It is the BIDs name of the file. For historical reasons, we kept the convention required by the codes in [DeepBrainNet](https://github.com/vishnubashyam/DeepBrainNet). The modality of the synthetic MPRAGEs has the suffix '-SR'.
 The 'domains' columns define membership to training, bias and testing sets, as described in Figure 6 of our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation).
 
+#### MRI modalities
+The tools are implemented to deal with real MPRAGEs and the synthetic MPRAGEs predicted from the following modalities:
+* T2w (T2-weigthed) 
+* T1w (T2-weigthed, non-MPRAGEs)
+* T2wFLAIR (T2-weigthed FLAIR)
+* T1wFLAIR-SR (T1-weigthed FLAIR)
+* IR (Inversion Recovery)
+
+
 #### Adding more architectures
 Note that more models from https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 can be used as long as line 43 of [train_model.py](/train_model.py) is modified accordingly.
 Also, some models may have been saved using an old version of Keras (e.g., 2.2.4). In that case, Keras 2.2.4 must be installed to extract and save the model weights via:
@@ -156,7 +165,7 @@ results_folder = "[ROOT]/results_dbn"
 ```python 
 project_folder = "[ROOT]"
 ```
-* Run [selected_results.py](/modality_comparisons.py)
+* Run [modality_comparisons.py](/modality_comparisons.py)
 ```python 
 # Define the folders containing the results
 results_folder = "[ROOT]/results"
