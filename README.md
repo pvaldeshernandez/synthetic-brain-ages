@@ -50,14 +50,19 @@ This folder contains the following folders and files:
 
 The example we provide in [participants_data.csv](/example_data/data/participants_data.csv) is a table that has the following form ('-' means empty, NaN or undefined):
 
-| UID                  | ID   | modality  | scanner | age | domain (Holdout) | domain (KFold 01) | domain (KFold 02) | domain (KFold 03) |
-| :---                 | :--- | :---      | :---    | :---| :---             | :---              | :---              | :---              |
-| sub-0002_ses-01_run-02 | 0002 | MPRAGE-SR | Avanto  | 41  | training         | training          | linear            | training          |
-| sub-0002_ses-01_run-04 | 0002 | T1w-SR    | Avanto  | 41  | training         | training          | linear            | training          |
-| sub-0002_ses-01_run-07 | 0002 | T2w-SR    | Avanto  | 41  | training         | training          | linear            | training          |
-| sub-0003_ses-01_run-02 | 0003 | MPRAGE-SR | Verio   | 65  | training         | training          | training          | linear            |
-| sub-0003_ses-01_run-03 | 0003 | MPRAGE    | Verio   | 65  | training         | training          | training          | linear            |
-| sub-0004_ses-01_run-04 | 0004 | T1w-SR    | Verio   | 25  | -                | -                 | -                 | -                 |
+| UID                    | ID   | modality     | scanner | age | domain_Holdout_01 | domain_KFold_01 | domain_KFold_02 | domain_KFold_03 |
+|------------------------|------|--------------|---------|-----|-------------------|-----------------|-----------------|-----------------|
+| sub-0002_ses-01_run-02 | 0002 | MPRAGE-SR    | Avanto  | 41  | training          | training        | linear          | training        |
+| sub-0002_ses-01_run-04 | 0002 | T1w-SR       | Avanto  | 41  | training          | training        | linear          | training        |
+| sub-0002_ses-01_run-07 | 0002 | T2w-SR       | Avanto  | 41  | training          | training        | linear          | training        |
+| sub-0003_ses-01_run-02 | 0003 | MPRAGE-SR    | Verio   | 65  | training          | training        | training        | linear          |
+| sub-0003_ses-01_run-03 | 0003 | MPRAGE       | Verio   | 65  | training          | training        | training        | linear          |
+| ...                    | ...  | ...          | ...     | ... | ...               | ...             | ...             | ...             |
+| sub-1989_ses-01_run-07 | 1989 | T2w-SR       | Prisma  | 36  | testing           | -               | -               | -               |
+| sub-1989_ses-01_run-08 | 1989 | T2wFLAIR-SR  | Prisma  | 36  | testing           | -               | -               | -               |
+| sub-1990_ses-01_run-02 | 1990 | MPRAGE-SR    | Verio   | 21  | testing           | -               | -               | -               |
+| sub-1990_ses-01_run-03 | 1990 | MPRAGE       | Verio   | 21  | testing           | -               | -               | -               |
+| sub-1990_ses-01_run-08 | 1990 | T2wFLAIR-SR  | Verio   | 21  | testing           | -               | -               | -               |
 
 Note that UID follows the structure sub-[ID]_session-01_run-[run_number], the modality of the synthetic MPRAGEs has the suffix '-SR' and 'domain' columns define membership to training, bias correction, and testing sets, as described in Figure 6 of our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation).
 
@@ -105,7 +110,6 @@ new_model.save('/data/DBN_InceptionResnetv2.h5')
 
 ### Run the workflow
 * Run [create_data_deployed.py](/create_data_deployed.py) after modifying the piece of code below. This will merge the data in [slices_filenames.csv](/example_data/data/slices_filenames.csv) and [participants_data.csv](/example_data/data/participants_data.csv), create lists of dataframes, image generators, and other variables.
-
 ```python
 # Directories and files
 # Define the path to the csv file containing the list of jpg files generated with DeepBrainNet's Slicer.py
@@ -126,7 +130,7 @@ progress_folder = "[ROOT]/progress"
 # Define the folder containing variables that will be generated during the training
 variables_folder = "[ROOT]/variables"
 ```
-* The lines in the following piece of code of [train_model_deployed.py](/train_model_deployed.py) could be uncommented if more bias models are desired:
+* More lines in the following piece of code of [train_model_deployed.py](/train_model_deployed.py) could be uncommented if more bias models are desired to be accounted for:
 ```python
 formulas = [
     "brainage ~ age",
@@ -139,7 +143,7 @@ formulas = [
     # "brainage ~ age ^ 2 * modality * scanner",
 ]
 ```
-* Run [obtain_results.py](/obtain_results_deployed.py) after modifying the piece of code below.
+* Run [obtain_results.py](/obtain_results_deployed.py) after modifying the piece of code below. This will predict the brain ages in the test data using the winning models, i.e., the CNN model that minimized the bias-uncorrected MAE and the bias correction model that minimized the bias-corrected MAE.
 ```python
 # Define the folder containing the JPEG files
 data_dir = "path/to/jpegs"
@@ -151,18 +155,21 @@ progress_folder = "[ROOT]/progress"
 # Define the folder containing variables that will be generated after the prediction
 variables_folder = "[ROOT]/variables"
 ```
-
 * Run [obtain_results_originalDBN_deployed.py](/obtain_results_originalDBN_deployed.py) after modifying exactly like in [obtain_results_deployed.py](/obtain_results_deployed.py) except for:
 ```python
+# Define the selected DeepBrainNet model, unretrained
+selected_model = "path/to/model"
+# Define the folder containing the results and progress files
 results_folder = "[ROOT]/results_dbn"
 ```
+   This will predict the brain ages in the test set using the original DeepBrainNet model without retraining on original MPRAGEs
    Note: [obtain_results_deployed.py](/obtain_results_deployed.py) generates the results for the best re-trained model for all MRIs, while [obtain_results_originalDBN_deployed.py](/obtain_results_originalDBN_deployed.py) generates the results for the original MPRAGEs using the original [BeepBrainNetModel](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Models/DBN_model.h5)
 
 * Run [selected_results_deployed.py](/selected_results_deployed.py) after modifying:
 ```python 
 # Define the folder containing the results and progress files
-results_folder = "ROOT/results"
-results_folder_dbn = "ROOT/results_dbn"
+results_folder = "[ROOT]/results"
+results_folder_dbn = "[ROOT]/results_dbn"
 progress_folder = "[ROOT]/progress"
 ```
 ## Using our re-trained model
