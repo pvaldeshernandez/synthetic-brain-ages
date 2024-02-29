@@ -13,7 +13,7 @@ The retraining consists of the following steps:
 6. Select the best model and save it.
 8. Predict the brain ages, save them, and plot them against the chronological ages.
 
-Note: steps 2 and 3 are interchangeable depending on the adopted strategy, but our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation) offers a route.
+Note: steps 2 and 3 are interchangeable depending on the adopted strategy, but our [paper](https://doi.org/10.1038/s41598-023-47021-y) offers a route.
 
 ### Install dependencies
 To [run the workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow), you will need to install all of the Python libraries that are required. 
@@ -64,7 +64,7 @@ The example we provide in [participants_data.csv](/example_data/data/participant
 | sub-1990_ses-01_run-03 | 1990 | MPRAGE       | Verio   | 21  | testing           | -               | -               | -               |
 | sub-1990_ses-01_run-08 | 1990 | T2wFLAIR-SR  | Verio   | 21  | testing           | -               | -               | -               |
 
-UID is a unique identifier of the image and follows the structure sub-[ID]_session-01_run-[run_number], the modality of the synthetic MPRAGEs has the suffix '-SR' and the 'domain' columns define membership to training, bias correction, and testing sets, as described in Figure 6 of our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation).
+UID is a unique identifier of the image and follows the structure sub-[ID]_session-01_run-[run_number], the modality of the synthetic MPRAGEs has the suffix '-SR' and the 'domain' columns define membership to training, bias correction, and testing sets, as described in Figure 6 of our [paper](https://doi.org/10.1038/s41598-023-47021-y).
 
 Finally, go to https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 and download the following files:
 + DeepBrainNet_InceptionResnetv2.h5
