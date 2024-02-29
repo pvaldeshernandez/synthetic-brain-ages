@@ -1,7 +1,7 @@
 # Codes for retraining DeepBrainNet for synthetic MPRAGEs
 
 ## Summary
-This toolbox was used to retrain, via transfer learning, [DeepBrainNet](https://github.com/vishnubashyam/DeepBrainNet) models to predict brain age from synthetic research-grade MPRAGEs predicted from clinical-grade MRIs of arbitrary modalities. A DeepBrainNet model is a CNN developed by [Bashyan et al., (2020)](https://doi.org/10.1093%2Fbrain%2Fawaa160) to predict brain age that can be based on different known architectures like InceptionResNetv2, VGG16, etc. The synthetic MPRAGEs can be predicted using [SynthSR](https://github.com/BBillot/SynthSR/tree/main/SynthSR), developed by [Iglesias et al., 2023](https://doi.org/10.1126%2Fsciadv.add3607) or any super-resolution that has learned the map between any MRI to its corresponding research-grade MPRAGE.
+This toolbox was used to retrain, via transfer learning, [DeepBrainNet](https://github.com/vishnubashyam/DeepBrainNet) models to predict brain age from synthetic research-grade MPRAGEs predicted from clinical-grade MRIs of arbitrary modalities. A DeepBrainNet model is a Convolutional Neural Network (CNN) developed by [Bashyan et al., (2020)](https://doi.org/10.1093%2Fbrain%2Fawaa160) to predict brain age that can be based on different known architectures like InceptionResNetv2, VGG16, etc. The synthetic MPRAGEs can be predicted using [SynthSR](https://github.com/BBillot/SynthSR/tree/main/SynthSR), developed by [Iglesias et al., 2023](https://doi.org/10.1126%2Fsciadv.add3607) or any super-resolution that has learned the map between the MRI to its corresponding research-grade MPRAGE.
 
 ## General workflow
 The retraining consists of the following steps:
@@ -10,10 +10,10 @@ The retraining consists of the following steps:
 3. Normalize the synthetic MPRAGEs to the FSL's 1mm-isotropic template.
 4. Use [Slicer.py](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Script/Slicer.py) (follow their installation requirements, e.g., modules, packages) to save the axial slices into separate image files.
 5. Retrain the models.
-6. Select the best model.
-7. Generate the results.
+6. Select the best model and save it.
+8. Predict the brain ages, save them, and plot them against the chronological ages.
 
-(steps 2 and 3 are interchangeable depending on what strategy is adopted)
+Note: steps 2 and 3 are interchangeable depending on the adopted strategy, but our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation) offers a route.
 
 ### Install dependencies
 To [run the workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow), you will need to install all of the Python libraries that are required. 
@@ -29,62 +29,48 @@ pip install numpy pandas scipy scikit-learn keras matplotlib tensorflow-gpu
 ```
 
 ### Prepare the data
-Use [SynthSR](https://github.com/BBillot/SynthSR/tree/main/SynthSR) to predict the synthetic MPRAGEs. Normalize and skull-strip the synthetic MPRAGEs and any original MPRAGE also present in your sample. Perform a careful QC to remove the MRIs that are noisy or were not preprocessed correctly--see our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation) for suggestions.
+Use [SynthSR](https://github.com/BBillot/SynthSR/tree/main/SynthSR) to predict the synthetic MPRAGEs. Normalize and skull-strip the synthetic MPRAGEs, as well as any original MPRAGE also present in your sample. Perform a careful QC to remove the MRIs that are noisy or were not preprocessed correctly--see our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation) for suggestions.
 
-Use [Slicer.py](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Script/Slicer.py) on the synthetic and original MPRAGEs to save their axial slices into separate JPEG files in a single folder in a fast drive. Each filename must have the following format:
+Use [Slicer.py](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Script/Slicer.py) on the synthetic and original MPRAGEs to save 80 of their axial slices into separate JPEG files in a single folder, preferably in a fast drive. Rename the JPEGs according to:
 
-/path/to/jpg/Subject[ID]_run[number]_T1_BrainAlig-[slice].jpg
+/path/to/jpg/sub-[ID]_session-01_run-[run_number]_slice-[slice_number].jpg (e.g., sub-1234_session-01_run-12_slice-00.jpg)
 
-"ID" is the ID of the subject, and "number" is a unique instance number that refers to a specific modality and repetition (e.g. if the subject has 3 different modalities, with 2, 3, 1 repetitions, "number" will go from 01 to 06.
+"ID" is the unique identifier of the subject and "slice_number" goes from 00 to 79. The variable "run_number" is a unique instance number that refers to a specific combination of modality and repetition (e.g. if the subject has 3 different modalities, with 2, 3, 1 repetitions, "number" will go from 01 to 06). Note that we always set the session as 01 as we consider it a repetition (i.e., "run_number" encodes actual sessions and repetitions indistinctly). However, nothing stops you from using the actual session number and letting "run_number" exclusively encode repetitions within sessions.
 
-These filenames names will be listed in [slicesdir.csv](/example_data/data/slicesdir.csv), as explained below. "Slice" is the slice number that goes from 0 to 79. as explained in our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation).
+These file names (without the folder name) have to be written to a text file named 'slices_filenames.csv'. 
 
-The folder [example_data](/example_data) contains the following folders and files:
+To prepare the folders needed to [run the workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow), copy the content of the folder [example_data](/example_data) to the [root folder](/)
+This folder contains the following folders and files:
  - [data](/example_data/data):
-   - [slicesdir.csv](/example_data/data/slicesdir.csv)
-   - [Tn_linear.csv](/example_data/data/Tn_linear.csv)
+   - [slices_filenames.csv](/example_data/data/slices_filenames.csv). This is an example we provide as a guide to the abovementioned file containing the names of the JPEGs.
+   - [participants_data.csv](/example_data/data/participants_data.csv) This is an example of a file containing data from the participants needed for the analysis (see a detailed example below).
  - [progress](/example_data/progress) (empty)
  - [results](/example_data/results) (empty)
  - [variables](/example_data/variables) (empty)
 
-Copy these folders to the [root folder](/).
+The example we provide in [participants_data.csv](/example_data/data/participants_data.csv) is a table that has the following form ('-' means empty, NaN or undefined):
 
-Go to https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 and download the following files:
+| UID                  | ID   | modality  | scanner | age | domain (Holdout) | domain (KFold 01) | domain (KFold 02) | domain (KFold 03) |
+| :---                 | :--- | :---      | :---    | :---| :---             | :---              | :---              | :---              |
+| sub-0002_ses-01_run-02 | 0002 | MPRAGE-SR | Avanto  | 41  | training         | training          | linear            | training          |
+| sub-0002_ses-01_run-04 | 0002 | T1w-SR    | Avanto  | 41  | training         | training          | linear            | training          |
+| sub-0002_ses-01_run-07 | 0002 | T2w-SR    | Avanto  | 41  | training         | training          | linear            | training          |
+| sub-0003_ses-01_run-02 | 0003 | MPRAGE-SR | Verio   | 65  | training         | training          | training          | linear            |
+| sub-0003_ses-01_run-03 | 0003 | MPRAGE    | Verio   | 65  | training         | training          | training          | linear            |
+| sub-0004_ses-01_run-04 | 0004 | T1w-SR    | Verio   | 25  | -                | -                 | -                 | -                 |
+
+Note that UID follows the structure sub-[ID]_session-01_run-[run_number], the modality of the synthetic MPRAGEs has the suffix '-SR' and 'domain' columns define membership to training, bias correction, and testing sets, as described in Figure 6 of our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation).
+
+Finally, go to https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 and download the following files:
 + DeepBrainNet_InceptionResnetv2.h5
 + DeepBrainNet_VGG16.h5
 
-Copy these files to [data](/data/slicesdir.csv) and rename them by substituting "DeepBrainNet" with "DBN".
+Copy these files to [data](/data/) and rename them by substituting "DeepBrainNet" with "DBN".
 
-* [slicesdir.csv](/data/slicesdir.csv) will contain a list of the names of the JPEG files
-* [Tn_linear.csv](//data/Tn_linear.csv) will be the following table:
+#### Adding more CNN architectures
+Note that more models from https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 can be used as long as line 47 of [train_model_deployed.py](/train_model_deployed.py) is modified accordingly.
 
-| ID   | modality  | UID                  | age | Sex    | Race  | scanner | t1s                                                                                                      | domain_Holdout_01 | domain_KFold_01 | domain_KFold_02 | domain_KFold_03 |
-| :--- | :---      | :---                 | :---| :---   | :---  | :---    | :---                                                                                                     | :---              | :---            | :---            | :---            |
-| 0002 | MPRAGE-SR | sub-0002_ses-01_run-02 | 41 | female | white | Avanto  | /orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0002run02_T1_BrainAligned.nii | training          | training        | linear          | training        |
-| 0002 | T1w-SR    | sub-0002_ses-01_run-04 | 41 | female | white | Avanto  | /orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0002run04_T1_BrainAligned.nii | training          | training        | linear          | training        |
-| 0002 | T2w-SR    | sub-0002_ses-01_run-07 | 41 | female | white | Avanto  | /orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0002run07_T1_BrainAligned.nii | training          | training        | linear          | training        |
-| 0003 | MPRAGE-SR | sub-0003_ses-01_run-02 | 65 | female | white | Verio   | /orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0003run02_T1_BrainAligned.nii | training          | training        | training        | linear          |
-| 0003 | MPRAGE    | sub-0003_ses-01_run-03 | 65 | female | white | Verio   | /orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0003run03_T1_BrainAligned.nii | training          | training        | training        | linear          |
-| 0004 | T1w-SR    | sub-0004_ses-01_run-04 | 25 | male   | white | Verio   | /orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0004run04_T1_BrainAligned.nii | training          | linear          | training        | training        |
-| 0004 | T2w-SR    | sub-0004_ses-01_run-07 | 25 | male   | white | Verio   | /orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0004run07_T1_BrainAligned.nii | training          | linear          | training        | training        |
-| 0004 | T1w-SR    | sub-0004_ses-01_run-13 | 25 | male   | white | Verio   | /orange/cruzalmeida/pvaldeshernandez/Data/Shands_brainage/torun/Subject0004run13_T1_BrainAligned.nii | training          | linear          | training        | training        |
-
-Note that, in column "t1s", the nifti file name of the first row contains the string "run02". As explained above, this unique string encodes modality and repetition. At the same time, UID, which is in BIDs format, does the same (they are all ses_01). Unfortunately, this is redundant: for historical reasons, we kept the convention required by the codes in [DeepBrainNet](https://github.com/vishnubashyam/DeepBrainNet). You can feel free to use the same BIDs convention for the file names in t1s.
-
-The modality of the synthetic MPRAGEs has the suffix '-SR'.
-The 'domains' columns define membership to training, bias, and testing sets, as described in Figure 6 of our [paper](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#citation).
-
-#### MRI modalities
-The tools are implemented to deal with real MPRAGEs and the synthetic MPRAGEs predicted from the following modalities:
-* T2w (T2-weighted) 
-* T1w (T2-weigthed, non-MPRAGEs)
-* T2wFLAIR (T2-weighted FLAIR)
-* T1wFLAIR-SR (T1-weighted FLAIR)
-* IR (Inversion Recovery)
-
-#### Adding more architectures
-Note that more models from https://upenn.app.box.com/v/DeepBrainNet/folder/120404890511 can be used as long as line 43 of [train_model.py](/train_model.py) is modified accordingly.
-Also, some models may have been saved using an old version of Keras (e.g., 2.2.4). In that case, Keras 2.2.4 must be installed to extract and save the model weights via:
+We warn that some models may have been saved using an old version of Keras (e.g., 2.2.4). In that case, Keras 2.2.4 must be installed to extract and save the model weights via:
 ```python
 from keras.models import load_model
 import pickle
@@ -118,9 +104,10 @@ new_model.save('/data/DBN_InceptionResnetv2.h5')
 ```
 
 ### Run the workflow
-* Run [create_data_deployed.py](/create_data_deployed.py) after modifying:
+* Run [create_data_deployed.py](/create_data_deployed.py) after modifying the piece of code below. This will merge the data in [slices_filenames.csv](/example_data/data/slices_filenames.csv) and [participants_data.csv](/example_data/data/participants_data.csv), create lists of dataframes, image generators, and other variables.
+
 ```python
-# Directories and files (change as needed)
+# Directories and files
 # Define the path to the csv file containing the list of jpg files generated with DeepBrainNet's Slicer.py
 csv_file = "[ROOT]/data/slices_filenames.csv"
 # Define the path to the table containing the subjects' information
@@ -129,7 +116,7 @@ data_file = "[ROOT]/data/participants_data.csv"
 results_folder = "[ROOT]/results"
 progress_folder = "[ROOT]/progress"
 ```
-* Run [train_model_deployed.py](/train_model_deployed.py) after modifying:
+* Run [train_model_deployed.py](/train_model_deployed.py) after modifying the piece of code below. This will re-train the DeepBrainNet model.
 ```python
 # Define the folder containing the models
 data_dir_models = "[ROOT]/data"
@@ -139,7 +126,7 @@ progress_folder = "[ROOT]/progress"
 # Define the folder containing variables that will be generated during the training
 variables_folder = "[ROOT]/variables"
 ```
-
+* The lines in the following piece of code of [train_model_deployed.py](/train_model_deployed.py) could be uncommented if more bias models are desired:
 ```python
 formulas = [
     "brainage ~ age",
@@ -152,8 +139,7 @@ formulas = [
     # "brainage ~ age ^ 2 * modality * scanner",
 ]
 ```
-
-* Run [obtain_results.py](/obtain_results_deployed.py) after modifying:
+* Run [obtain_results.py](/obtain_results_deployed.py) after modifying the piece of code below.
 ```python
 # Define the folder containing the JPEG files
 data_dir = "path/to/jpegs"
