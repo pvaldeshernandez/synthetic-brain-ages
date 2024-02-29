@@ -6,37 +6,16 @@ from keras.losses import mean_absolute_error
 from keras.models import load_model
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import Sequence
+from myClassesFunctions import group_by_ID
 
 from utils import load_state
-
-
-class CustomSequence(Sequence):
-    def __init__(self, gen, dataframe, x_col, y_col, flow_args):
-        # Create a DataFrameIterator instance
-        self.dataflow = gen.flow_from_dataframe(
-            dataframe=dataframe, x_col=x_col, y_col=y_col, **flow_args
-        )
-
-    def __len__(self):
-        return len(self.dataflow)
-
-    def __getitem__(self, idx):
-        # Get the next batch of data from dataflow
-        x, y = self.dataflow[idx]
-
-        return x, y
-
-    def on_epoch_end(self):
-        # Shuffle the data in dataflow
-        self.dataflow.on_epoch_end()
-
 
 # %%
 # Directories and files
 # Define the folder containing the JPEG files
 data_dir = "path/to/jpegs"
-# Define the folder containing the models
-data_dir_models = "[ROOT]/data"
+# Define the selected DeepBrainNet model, un-retrained
+selected_model = "data/DBN_[architecture].h5"
 # Define the folder containing the results and progress files
 results_folder = "[ROOT]/results_dbn"
 progress_folder = "[ROOT]/progress"
@@ -62,13 +41,33 @@ datagen_args = {
 }
 gen = ImageDataGenerator(**datagen_args)
 
-# Load original published model
-dbnmodel = load_model(
-    "/orange/cruzalmeida/pvaldeshernandez/projects/shands-brainage/data/DBN_VGG16.h5"
-)
+# Load winner or published CNN model
+dbnmodel = load_model(selected_model)
+
 
 # %%
 # Predict in the final testing data
+class CustomSequence(Sequence):
+    def __init__(self, gen, dataframe, x_col, y_col, flow_args):
+        # Create a DataFrameIterator instance
+        self.dataflow = gen.flow_from_dataframe(
+            dataframe=dataframe, x_col=x_col, y_col=y_col, **flow_args
+        )
+
+    def __len__(self):
+        return len(self.dataflow)
+
+    def __getitem__(self, idx):
+        # Get the next batch of data from dataflow
+        x, y = self.dataflow[idx]
+
+        return x, y
+
+    def on_epoch_end(self):
+        # Shuffle the data in dataflow
+        self.dataflow.on_epoch_end()
+
+
 flow_args = {
     "directory": data_dir,
     "has_ext": False,

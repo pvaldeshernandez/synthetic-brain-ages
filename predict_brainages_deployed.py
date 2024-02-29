@@ -17,9 +17,12 @@ from myClassesFunctions import (
 # Directories and files
 # Define the folder containing the JPEG files
 data_dir = "/path/to/jpegs"
+# Define the path to the csv file containing the list of JPEGs files generated with DeepBrainNet's
+# Slicer.py
+csv_file = "[ROOT]/data/new_slices_filenames.csv"
 # Define the folder containing the new participants' data
 data_file = "/path/to/new_participants_data.csv"
-# Define the folder containing the retrained model
+# Define the folder containing the retrained model or the winner model provided by us
 retrained_model = "path/to/retrained_model.h5"
 # Define the folder containing the results
 results_folder = "path/to/results"
@@ -29,7 +32,18 @@ pd_test_csv = os.path.join(results_folder, "pd_test.csv")
 
 # %%
 # Read all the variables
-test_df = pd.read_csv(data_file)
+# Read data into DataFrames
+data_df = pd.read_csv(csv_file, header=None)
+data_dm = pd.read_csv(data_file, dtype={"ID": str})
+
+# Rename columns and add new columns to the data_df DataFrame
+data_df.columns = ["File_name"]
+data_df["UID"] = data_df["File_name"].str.split("_slice").str[0]
+
+# Merge the data_df and data_dm DataFrames using the "name" column as the key
+test_df = pd.merge(data_df, data_dm, on="UID", how="left")
+
+# obtain modalities and scanners
 modalities = test_df["modality"].unique()
 scanners = test_df["scanner"].unique()
 

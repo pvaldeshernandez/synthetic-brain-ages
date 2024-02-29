@@ -18,8 +18,6 @@ from utils import load_state
 # %%
 # Define the folder containing the JPEG files
 data_dir = "path/to/jpegs"
-# Define the folder containing the models
-data_dir_models = "[ROOT]/data"
 # Define the folder containing the results and progress files
 results_folder = "[ROOT]/results"
 progress_folder = "[ROOT]/progress"
@@ -106,7 +104,6 @@ with open(variable_file, "rb") as f:
 
 _, filename = os.path.split(grid_selection[2])
 final_corrected_model = load_model(os.path.join(results_folder, "new" + aic + "_" + filename))
-# final_model = load_model(os.path.join(results_folder, "trained_" + filename))
 final_model = Model(
     inputs=final_corrected_model.input, outputs=final_corrected_model.layers[-4].output
 )

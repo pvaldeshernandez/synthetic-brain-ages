@@ -9,7 +9,7 @@ from utils import save_state
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 # Directories and files
-# Define the path to the csv file containing the list of jpg files generated with DeepBrainNet's
+# Define the path to the csv file containing the list of JPEGs files generated with DeepBrainNet's
 # Slicer.py
 csv_file = "[ROOT]/data/slices_filenames.csv"
 # Define the path to the table containing the subjects' information
