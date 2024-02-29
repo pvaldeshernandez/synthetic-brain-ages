@@ -112,7 +112,7 @@ new_model.save('/data/DBN_InceptionResnetv2.h5')
 * Run [create_data_deployed.py](/create_data_deployed.py) after modifying the piece of code below. This will merge the data in [slices_filenames.csv](/example_data/data/slices_filenames.csv) and [participants_data.csv](/example_data/data/participants_data.csv), create lists of dataframes, image generators, and other variables.
 ```python
 # Directories and files
-# Define the path to the csv file containing the list of jpg files generated with DeepBrainNet's Slicer.py
+# Define the path to the csv file containing the list of JPEGs files generated with DeepBrainNet's Slicer.py
 csv_file = "[ROOT]/data/slices_filenames.csv"
 # Define the path to the table containing the subjects' information
 data_file = "[ROOT]/data/participants_data.csv"
@@ -147,8 +147,6 @@ formulas = [
 ```python
 # Define the folder containing the JPEG files
 data_dir = "path/to/jpegs"
-# Define the folder containing the models
-data_dir_models = "[ROOT]/data"
 # Define the folder containing the results and progress files
 results_folder = "[ROOT]/results"
 progress_folder = "[ROOT]/progress"
@@ -157,12 +155,12 @@ variables_folder = "[ROOT]/variables"
 ```
 * Run [obtain_results_originalDBN_deployed.py](/obtain_results_originalDBN_deployed.py) after modifying exactly like in [obtain_results_deployed.py](/obtain_results_deployed.py) except for:
 ```python
-# Define the selected DeepBrainNet model, unretrained
-selected_model = "path/to/model"
+# Define the selected DeepBrainNet model, un-retrained
+selected_model = "data/DBN_[architecture].h5"
 # Define the folder containing the results and progress files
 results_folder = "[ROOT]/results_dbn"
 ```
-   This will predict the brain ages in the test set using the original DeepBrainNet model without retraining on original MPRAGEs
+   This will predict the brain ages in the test set using the original version of the selected CNN model (i.e., without retraining) on original MPRAGEs.
    Note: [obtain_results_deployed.py](/obtain_results_deployed.py) generates the results for the best re-trained model for all MRIs, while [obtain_results_originalDBN_deployed.py](/obtain_results_originalDBN_deployed.py) generates the results for the original MPRAGEs using the original [BeepBrainNetModel](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Models/DBN_model.h5)
 
 * Run [selected_results_deployed.py](/selected_results_deployed.py) after modifying:
@@ -173,9 +171,22 @@ results_folder_dbn = "[ROOT]/results_dbn"
 progress_folder = "[ROOT]/progress"
 ```
 ## Using our re-trained model
-Use [predict_brainages.py](/predict_brainages.py) on new user-provided data. The participants' data need to be provided similar to that in file [Tn_linear.csv](//data/Tn_linear.csv) (see [Prepare the data](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#prepare-the-data)).
+Use [predict_brainages_deployed.py](/predict_brainages_deployed.py) on new user-provided data after modifying the following piece of code:
+```python 
+# Define the folder containing the JPEG files
+data_dir = "/path/to/jpegs"
+# Define the path to the csv file containing the list of JPEGs files generated with DeepBrainNet's Slicer.py
+csv_file = "[ROOT]/data/new_slices_filenames.csv"
+# Define the folder containing the new participants' data
+data_file = "/path/to/new_participants_data.csv"
+# Define the folder containing the retrained model or the winner model provided by us
+retrained_model = "path/to/retrained_model.h5"
+# Define the folder containing the results
+results_folder = "path/to/results"
+```
+The new  file containing the text slices' JPEGs follows the same rules as in [slices_filenames.csv](/example_data/data/slices_filenames.csv) (see [Prepare the data](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#prepare-the-data)), while the text file containing the new participants' data follows the same rules as in [participants_data.csv](/example_data/data/participants_data.csv) (see [Prepare the data](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#prepare-the-data)), except the 'domains' columns are not needed.
 
-The path to the retrained model (the one with the bias correction layer) is also needed. Use yours or request ours via pvaldeshernandez@ufl.edu.
+The path to the retrained model (the one with the bias correction layer) is also needed. Use the one generates after running the previous steps or request ours via pvaldeshernandez@ufl.edu.
 
 ## Cite our paper
 If you use this code in your research, please acknowledge this work by citing the
