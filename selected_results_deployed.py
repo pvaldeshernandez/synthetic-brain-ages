@@ -4,8 +4,8 @@ from myClassesFunctions import cronbach_from_df, myplots
 from utils import load_state
 
 # Define the folder containing the results and progress files
-results_folder = "ROOT/results"
-results_folder_dbn = "ROOT/results_dbn"
+results_folder = "[ROOT]/results"
+results_folder_dbn = "[ROOT]/results_dbn"
 progress_folder = "[ROOT]/progress"
 
 fig_pred_dbn = os.path.join(results_folder_dbn, "BrainAge_Predictions_OriginalDBN.png")
