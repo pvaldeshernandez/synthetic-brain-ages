@@ -186,5 +186,6 @@ results_folder = "path/to/results"
 The new  file containing the text slices' JPEGs follows the same rules as in [slices_filenames.csv](/example_data/data/slices_filenames.csv) (see [Prepare the data](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#prepare-the-data)), while the text file containing the new participants' data follows the same rules as in [participants_data.csv](/example_data/data/participants_data.csv) (see [Prepare the data](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#prepare-the-data)), except the 'domains' columns are not needed. The path to the retrained model (the one with the bias correction layer) is also needed. Use the one generated after running the previous steps or request ours via pvaldeshernandez@ufl.edu.
 
 ## Cite our paper
-If you use this code in your research, please acknowledge this work by citing the
-paper: https://doi.org/10.1038/s41598-023-47021-y.
+If you use this code in your research, please acknowledge this work by citing the paper: 
+
+[Valdes-Hernandez, P.A., Laffitte Nodarse, C., Peraza, J.A. et al. Toward MR protocol-agnostic, unbiased brain age predicted from clinical-grade MRIs. Scientific Reports 13, 19570 (2023)](https://doi.org/10.1038/s41598-023-47021-y)
