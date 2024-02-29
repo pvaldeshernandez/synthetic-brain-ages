@@ -160,8 +160,7 @@ selected_model = "data/DBN_[architecture].h5"
 # Define the folder containing the results and progress files
 results_folder = "[ROOT]/results_dbn"
 ```
-   This will predict the brain ages in the test set using the original version of the selected CNN model (i.e., without retraining) on original MPRAGEs.
-   Note: [obtain_results_deployed.py](/obtain_results_deployed.py) generates the results for the best re-trained model for all MRIs, while [obtain_results_originalDBN_deployed.py](/obtain_results_originalDBN_deployed.py) generates the results for the original MPRAGEs using the original [BeepBrainNetModel](https://github.com/vishnubashyam/DeepBrainNet/blob/master/Models/DBN_model.h5)
+This will predict the brain ages in the test set using the original version of the selected CNN model (i.e., without retraining) on original MPRAGEs.
 
 * Run [selected_results_deployed.py](/selected_results_deployed.py) after modifying:
 ```python 
