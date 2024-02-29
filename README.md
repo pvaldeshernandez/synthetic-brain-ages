@@ -109,7 +109,7 @@ new_model.save('/data/DBN_InceptionResnetv2.h5')
 ```
 
 ### Run the workflow
-* Run [create_data_deployed.py](/create_data_deployed.py) after modifying the piece of code below. This will merge the data in [slices_filenames.csv](/example_data/data/slices_filenames.csv) and [participants_data.csv](/example_data/data/participants_data.csv), create lists of dataframes, image generators, and other variables.
+1. Run [create_data_deployed.py](/create_data_deployed.py) after modifying the piece of code below. This will merge the data in [slices_filenames.csv](/example_data/data/slices_filenames.csv) and [participants_data.csv](/example_data/data/participants_data.csv), create lists of dataframes, image generators, and other variables.
 ```python
 # Directories and files
 # Define the path to the csv file containing the list of JPEGs files generated with DeepBrainNet's Slicer.py
@@ -120,7 +120,7 @@ data_file = "[ROOT]/data/participants_data.csv"
 results_folder = "[ROOT]/results"
 progress_folder = "[ROOT]/progress"
 ```
-* Run [train_model_deployed.py](/train_model_deployed.py) after modifying the piece of code below. This will re-train the DeepBrainNet model.
+2. Run [train_model_deployed.py](/train_model_deployed.py) after modifying the piece of code below. This will re-train the DeepBrainNet model.
 ```python
 # Define the folder containing the models
 data_dir_models = "[ROOT]/data"
@@ -130,7 +130,7 @@ progress_folder = "[ROOT]/progress"
 # Define the folder containing variables that will be generated during the training
 variables_folder = "[ROOT]/variables"
 ```
-* More lines in the following piece of code of [train_model_deployed.py](/train_model_deployed.py) could be uncommented if more bias models are desired to be accounted for:
+More lines in the following piece of code of [train_model_deployed.py](/train_model_deployed.py) could be uncommented if more bias models are desired to be accounted for:
 ```python
 formulas = [
     "brainage ~ age",
@@ -143,7 +143,7 @@ formulas = [
     # "brainage ~ age ^ 2 * modality * scanner",
 ]
 ```
-* Run [obtain_results.py](/obtain_results_deployed.py) after modifying the piece of code below. This will predict the brain ages in the test data using the winning models, i.e., the CNN model that minimized the bias-uncorrected MAE and the bias correction model that minimized the bias-corrected MAE.
+3. Run [obtain_results.py](/obtain_results_deployed.py) after modifying the piece of code below. This will predict the brain ages in the test data using the winning models, i.e., the CNN model that minimized the bias-uncorrected MAE and the bias correction model that minimized the bias-corrected MAE.
 ```python
 # Define the folder containing the JPEG files
 data_dir = "path/to/jpegs"
@@ -153,7 +153,7 @@ progress_folder = "[ROOT]/progress"
 # Define the folder containing variables that will be generated after the prediction
 variables_folder = "[ROOT]/variables"
 ```
-* Run [obtain_results_originalDBN_deployed.py](/obtain_results_originalDBN_deployed.py) after modifying exactly like in [obtain_results_deployed.py](/obtain_results_deployed.py) except for:
+4. Run [obtain_results_originalDBN_deployed.py](/obtain_results_originalDBN_deployed.py) after modifying exactly like in [obtain_results_deployed.py](/obtain_results_deployed.py) except for:
 ```python
 # Define the selected DeepBrainNet model, un-retrained
 selected_model = "data/DBN_[architecture].h5"
@@ -162,7 +162,7 @@ results_folder = "[ROOT]/results_dbn"
 ```
 This will predict the brain ages in the test set using the original version of the selected CNN model (i.e., without retraining) on original MPRAGEs.
 
-* Run [selected_results_deployed.py](/selected_results_deployed.py) after modifying:
+5. Run [selected_results_deployed.py](/selected_results_deployed.py) after modifying:
 ```python 
 # Define the folder containing the results and progress files
 results_folder = "[ROOT]/results"
