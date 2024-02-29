@@ -50,7 +50,7 @@ This folder contains the following folders and files:
 
 The example we provide in [participants_data.csv](/example_data/data/participants_data.csv) is a table that has the following form ('-' means empty, NaN or undefined):
 
-| UID                  | ID   | modality  | acanner | age | domain (Holdout) | domain (KFold 01) | domain (KFold 02) | domain (KFold 03) |
+| UID                  | ID   | modality  | scanner | age | domain (Holdout) | domain (KFold 01) | domain (KFold 02) | domain (KFold 03) |
 | :---                 | :--- | :---      | :---    | :---| :---             | :---              | :---              | :---              |
 | sub-0002_ses-01_run-02 | 0002 | MPRAGE-SR | Avanto  | 41  | training         | training          | linear            | training          |
 | sub-0002_ses-01_run-04 | 0002 | T1w-SR    | Avanto  | 41  | training         | training          | linear            | training          |
