@@ -18,7 +18,7 @@ Note: steps 2 and 3 are interchangeable depending on the adopted strategy, but o
 ### Install dependencies
 To [run the workflow](https://github.com/pvaldeshernandez/Multimodal_DeepBrainNet_Clinical_BrainAge_Training/blob/main/README.md#run-the-workflow), you will need to install all of the Python libraries that are required. 
 
-The easiest way to install the requirements is with Conda.
+The easiest way to install the requirements is with [Conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html)
 ```bash
 #!/bin/bash
 ml conda
