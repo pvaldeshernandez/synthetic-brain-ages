@@ -22,9 +22,9 @@ The easiest way to install the requirements is with [Conda](https://conda.io/pro
 ```bash
 #!/bin/bash
 ml conda
-conda create -p /path/to/clinicalDeepBrainNet_env pip python=3.9 -y
-conda config --append envs_dirs/path/to/clinicalDeepBrainNet_env
-source activate /path/to/clinicalDeepBrainNet_env
+conda create -p /path/to/synthetic_brain-ages pip python=3.9 -y
+conda config --append envs_dirs/path/to/synthetic_brain_ages_env
+source activate /path/to/synthetic_brain_ages_env
 pip install numpy pandas scipy scikit-learn keras matplotlib tensorflow-gpu
 ```
 
