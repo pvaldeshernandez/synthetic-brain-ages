@@ -22,9 +22,9 @@ The easiest way to install the requirements is with [Conda](https://conda.io/pro
 ```bash
 #!/bin/bash
 ml conda
-conda create -p /path/to/synthetic_brain_ages_env pip python=3.9 -y
-source config /path/to/
-source activate /path/to/synthetic_brain_ages_env
+conda create -p /path/to/envs/synthetic_brain_ages_env pip python=3.9 -y
+source config /path/to/envs
+source activate /path/to/envs/synthetic_brain_ages_env
 pip install numpy pandas scipy scikit-learn keras matplotlib tensorflow-gpu
 ```
 
